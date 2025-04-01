@@ -6,166 +6,16 @@ import Link from "next/link"
 import { useEffect, useState, useRef } from "react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
+import { events } from "@/constants/event"
+import { polos } from "@/constants/polos"
 
-const allDays = [
-  {
-    dayName: "SÁB",
-    date: "14.JUN",
-    color: "blue",
-    attractions: [
-      { name: "GERALDO AZEVEDO", artist: "", time: "20:00", pole: "Principal" },
-      { name: "PRISCILA SENNA", artist: "", time: "22:30", pole: "Principal" },
-      { name: "DESEJO DE MENINA", artist: "", time: "00:30", pole: "Principal" },
-      { name: "TRIO PÉ DE SERRA", artist: "", time: "15:00", pole: "Polo do Cruzeiro" },
-    ],
-  },
-  {
-    dayName: "DOM",
-    date: "15.JUN",
-    color: "green",
-    attractions: [
-      { name: "FLÁVIO JOSÉ", artist: "", time: "20:00", pole: "Principal" },
-      { name: "DORGIVAL DANTAS", artist: "", time: "22:30", pole: "Principal" },
-      { name: "CIRO SANTOS", artist: "", time: "00:30", pole: "Principal" },
-      { name: "ZABUMBA NOSSA SENHORA", artist: "", time: "15:00", pole: "Polo Cultural" },
-    ],
-  },
-  {
-    dayName: "SEG",
-    date: "16.JUN",
-    color: "yellow",
-    attractions: [
-      { name: "FESTIVAL DAS", artist: "QUADRILHAS", time: "19:00", pole: "Principal" },
-      { name: "JUNINAS", artist: "", time: "20:00", pole: "Principal" },
-      { name: "QUADRILHA MATUTA", artist: "", time: "15:00", pole: "Polo das Quadrilhas" },
-    ],
-  },
-  {
-    dayName: "TER",
-    date: "17.JUN",
-    color: "red",
-    attractions: [
-      { name: "LEO FOGUETE", artist: "", time: "20:00", pole: "Principal" },
-      { name: "JONAS ESTICADO", artist: "", time: "22:30", pole: "Principal" },
-      { name: "JOÃO VAQUEIRO", artist: "", time: "00:30", pole: "Principal" },
-    ],
-  },
-  {
-    dayName: "QUA",
-    date: "18.JUN",
-    color: "purple",
-    attractions: [
-      { name: "XAND AVIÃO", artist: "", time: "20:00", pole: "Principal" },
-      { name: "PABLO", artist: "", time: "22:30", pole: "Principal" },
-      { name: "FORROZÃO CHACAL", artist: "", time: "00:30", pole: "Principal" },
-    ],
-  },
-  {
-    dayName: "QUI",
-    date: "19.JUN",
-    color: "blue",
-    attractions: [
-      { name: "HENRY FREITAS", artist: "", time: "20:00", pole: "Principal" },
-      { name: "TARCÍSIO DO ACORDEON", artist: "", time: "22:30", pole: "Principal" },
-      { name: "LUAN ESTILIZADO", artist: "", time: "00:30", pole: "Principal" },
-    ],
-  },
-  {
-    dayName: "SEX",
-    date: "20.JUN",
-    color: "green",
-    attractions: [
-      { name: "SOLANGE ALMEIDA", artist: "", time: "20:00", pole: "Principal" },
-      { name: "NATTAN", artist: "", time: "22:30", pole: "Principal" },
-      { name: "LIMÃO COM MEL", artist: "", time: "00:30", pole: "Principal" },
-    ],
-  },
-  {
-    dayName: "SÁB",
-    date: "21.JUN",
-    color: "yellow",
-    attractions: [
-      { name: "ALCEU VALENÇA", artist: "", time: "20:00", pole: "Principal" },
-      { name: "ELBA RAMALHO", artist: "", time: "22:30", pole: "Principal" },
-      { name: "RAPHAELA SANTOS", artist: "", time: "00:30", pole: "Principal" },
-    ],
-  },
-  {
-    dayName: "DOM",
-    date: "22.JUN",
-    color: "red",
-    attractions: [
-      { name: "MANO WALTER", artist: "", time: "20:00", pole: "Principal" },
-      { name: "MATHEUS & KAUAN", artist: "", time: "22:30", pole: "Principal" },
-      { name: "BANDA MAGNÍFICOS", artist: "", time: "00:30", pole: "Principal" },
-    ],
-  },
-  {
-    dayName: "SEG",
-    date: "23.JUN",
-    color: "purple",
-    attractions: [
-      { name: "WESLEY SAFADÃO", artist: "", time: "20:00", pole: "Principal" },
-      { name: "MARI FERNANDEZ", artist: "", time: "22:30", pole: "Principal" },
-      { name: "CAVALEIROS DO FORRÓ", artist: "", time: "00:30", pole: "Principal" },
-    ],
-  },
-  {
-    dayName: "TER",
-    date: "24.JUN",
-    color: "blue",
-    attractions: [
-      { name: "SANTANNA", artist: "O CANTADOR", time: "20:00", pole: "Principal" },
-      { name: "PETRÚCIO AMORIM", artist: "", time: "22:30", pole: "Principal" },
-      { name: "QUINTETO VIOLADO", artist: "", time: "00:30", pole: "Principal" },
-    ],
-  },
-  {
-    dayName: "QUA",
-    date: "25.JUN",
-    color: "green",
-    attractions: [
-      { name: "ALOK", artist: "", time: "20:00", pole: "Principal" },
-      { name: "PEDRO SAMPAIO", artist: "", time: "22:30", pole: "Principal" },
-      { name: "DENNIS DJ", artist: "", time: "00:30", pole: "Principal" },
-    ],
-  },
-  {
-    dayName: "QUI",
-    date: "26.JUN",
-    color: "yellow",
-    attractions: [
-      { name: "BELL MARQUES", artist: "", time: "20:00", pole: "Principal" },
-      { name: "DURVAL LELYS", artist: "", time: "22:30", pole: "Principal" },
-      { name: "TIMBALADA", artist: "", time: "00:30", pole: "Principal" },
-    ],
-  },
-  {
-    dayName: "SEX",
-    date: "27.JUN",
-    color: "red",
-    attractions: [
-      { name: "ZÉ VAQUEIRO", artist: "", time: "20:00", pole: "Principal" },
-      { name: "JOÃO GOMES", artist: "", time: "22:30", pole: "Principal" },
-      { name: "VITOR FERNANDES", artist: "", time: "00:30", pole: "Principal" },
-    ],
-  },
-  {
-    dayName: "SÁB",
-    date: "28.JUN",
-    color: "purple",
-    attractions: [
-      { name: "GUSTTAVO LIMA", artist: "", time: "20:00", pole: "Principal" },
-      { name: "SIMONE MENDES", artist: "", time: "22:30", pole: "Principal" },
-      { name: "ERIC LAND", artist: "", time: "00:30", pole: "Principal" },
-    ],
-  },
-]
+
 
 export default function Home() {
   const [activeDot, setActiveDot] = useState(0)
   const carouselRef = useRef<HTMLDivElement>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
 
   useEffect(() => {
     const container = carouselRef.current
@@ -175,7 +25,7 @@ export default function Home() {
       if (!container) return
 
       const scrollPosition = container.scrollLeft
-      const itemWidth = container.scrollWidth / allDays.length
+      const itemWidth = container.scrollWidth / events.length
       const newActiveDot = Math.round(scrollPosition / itemWidth)
 
       // We want to group the dots into 5 sections
@@ -195,20 +45,13 @@ export default function Home() {
     if (!container) return
 
     // Calculate position based on dot index (each dot represents 3 days)
-    const itemWidth = container.scrollWidth / allDays.length
+    const itemWidth = container.scrollWidth / events.length
     const scrollAmount = itemWidth * index * 3
 
     container.scrollTo({ left: scrollAmount, behavior: "smooth" })
   }
 
-  const polos = [
-    { name: "Polo do Cruzeiro", slug: "cruzeiro" },
-    { name: "Polo da Poesia", slug: "poesia" },
-    { name: "Polo Gospel", slug: "gospel" },
-    { name: "Polo das Quadrilhas", slug: "quadrilhas" },
-    { name: "Polo Gastronômico", slug: "gastronomico" },
-    { name: "Polo Cultural", slug: "cultural" },
-  ]
+
 
   return (
     <div className="min-h-screen bg-[#0a1744] text-white overflow-hidden">
@@ -234,7 +77,7 @@ export default function Home() {
             Programação
           </a>
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-1 hover:text-yellow-400 transition-colors focus:outline-none">
+            <DropdownMenuTrigger className="flex items-center gap-1 hover:text-yellow-400 transition-colors focus:outline-none" >
               Polos <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-[#0c1d52] border-blue-800 text-white">
@@ -430,7 +273,7 @@ export default function Home() {
       {/* Programação Section */}
       <section id="programacao" className="py-16 bg-[#0a1744]">
         <div className="container mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12">
+          <h2 className="text-4xl font-bold text-center mb-12 flex flex-row justify-center items-center gap-2">
             <span className="text-white">Programação</span>
             <span className="block text-yellow-400">Imperdível</span>
           </h2>
@@ -482,7 +325,7 @@ export default function Home() {
               className="flex overflow-x-auto gap-4 pb-6 snap-x snap-mandatory scrollbar-hide"
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
-              {allDays.map((day) => (
+              {events.map((day) => (
                 <div
                   key={day.date}
                   className="bg-[#0c1d52] p-4 rounded-lg border border-blue-800 min-w-[280px] flex-shrink-0 snap-start"
@@ -511,7 +354,7 @@ export default function Home() {
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${activeDot === i ? "bg-yellow-400 scale-125" : "bg-gray-600 hover:bg-gray-500"
                     }`}
                   onClick={() => scrollToSection(i)}
-                  aria-label={`Ver dias ${i * 3 + 1} a ${Math.min((i + 1) * 3, allDays.length)}`}
+                  aria-label={`Ver dias ${i * 3 + 1} a ${Math.min((i + 1) * 3, events.length)}`}
                 ></button>
               ))}
             </div>

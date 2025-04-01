@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata = {
   title: "São João de Arcoverde 2025",
   description: "O melhor São João do interior de Pernambuco",
-    generator: 'v0.dev'
+  generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -28,5 +28,3 @@ export default function RootLayout({
 }
 
 
-
-import './globals.css'
