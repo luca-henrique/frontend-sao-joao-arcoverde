@@ -1,11 +1,18 @@
 import type React from "react"
-import { Farro } from "next/font/google"
-import "./globals.css"
+import { Farro, Flavors } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Header } from "@/components/molecules/header/header"
 
-const inter = Farro({
+import "./globals.css"
+
+
+const farro = Farro({
   weight: ["300", "400", "500", "700",],
+  subsets: ["latin"],
+})
+
+const flavors = Flavors({
+  weight: ["400"],
   subsets: ["latin"],
 })
 
@@ -22,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={inter.className}>
+      <body className={`${farro.className} ${flavors.className} `}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <div className="min-h-screen w-full bg-[#0a1744] text-white">
             <Header />

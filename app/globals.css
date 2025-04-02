@@ -58,18 +58,9 @@
   }
 }
 
-@font-face {
-  font-family: "Festa Junina";
-  src: url("/fonts/festa-junina.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
 
-h1,
-h2,
-h3 {
-  font-family: "Festa Junina", sans-serif;
+* {
+  font-family: "Farro", sans-serif;
   letter-spacing: 0.05em;
 }
 
