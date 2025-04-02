@@ -64,6 +64,10 @@
   letter-spacing: 0.05em;
 }
 
+.flavors-font{
+  font-family: 'Flavors', sans-serif !important;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
