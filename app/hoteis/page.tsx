@@ -60,22 +60,22 @@ export default function HoteisPage() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link href="/" className="hover:text-yellow-400 transition-colors">
+          <a href="#home" className="hover:text-yellow-400 transition-colors">
             Home
-          </Link>
-          <Link href="/programacao" className="hover:text-yellow-400 transition-colors">
+          </a>
+          <a href="#programacao" className="hover:text-yellow-400 transition-colors">
             Programação
-          </Link>
-          <DropdownMenu onOpenChange={setOpen}>
+          </a>
+          <DropdownMenu >
             <DropdownMenuTrigger
               className="flex items-center gap-1 hover:text-yellow-400 transition-colors focus:outline-none"
-              onMouseEnter={() => setOpen(true)}
+
             >
               Polos <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent
               className="bg-[#0c1d52] border-blue-800 text-white"
-              onMouseLeave={() => setOpen(false)}
+
             >
               {polos.map((polo) => (
                 <DropdownMenuItem key={polo.slug} className="hover:bg-[#081235] cursor-pointer">
@@ -89,9 +89,12 @@ export default function HoteisPage() {
           <Link href="/hoteis" className="hover:text-yellow-400 transition-colors">
             Hotéis
           </Link>
-          <Link href="#local" className="hover:text-yellow-400 transition-colors">
-            Local
+          <Link href="/servicos" className="hover:text-yellow-400 transition-colors">
+            Serviços
           </Link>
+          <a href="#local" className="hover:text-yellow-400 transition-colors">
+            Local
+          </a>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -125,20 +128,20 @@ export default function HoteisPage() {
         {isMobileMenuOpen && (
           <div className="absolute top-full left-0 right-0 bg-[#0c1d52] p-4 md:hidden z-50 border-t border-blue-800">
             <nav className="flex flex-col gap-4">
-              <Link
-                href="/"
+              <a
+                href="#home"
                 className="hover:text-yellow-400 transition-colors py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Home
-              </Link>
-              <Link
-                href="/programacao"
+              </a>
+              <a
+                href="#programacao"
                 className="hover:text-yellow-400 transition-colors py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Programação
-              </Link>
+              </a>
               <div className="relative py-2">
                 <div className="font-medium mb-2">Polos</div>
                 <div className="pl-4 flex flex-col gap-2">
@@ -156,25 +159,25 @@ export default function HoteisPage() {
               </div>
               <Link
                 href="/hoteis"
-                className="text-yellow-400 font-bold py-2"
+                className="hover:text-yellow-400 transition-colors py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Hotéis
               </Link>
               <Link
-                href="#atracoes"
+                href="/servicos"
                 className="hover:text-yellow-400 transition-colors py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Atrações
+                Serviços
               </Link>
-              <Link
+              <a
                 href="#local"
                 className="hover:text-yellow-400 transition-colors py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Local
-              </Link>
+              </a>
             </nav>
           </div>
         )}

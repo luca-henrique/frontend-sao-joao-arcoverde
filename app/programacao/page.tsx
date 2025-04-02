@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useState } from "react"
 
 export default function ProgramacaoPage() {
   const polos = [
@@ -19,10 +20,12 @@ export default function ProgramacaoPage() {
     { name: "Polo Cultural", slug: "cultural" },
   ]
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
   return (
     <div className="min-h-screen bg-[#0a1744] text-white">
       {/* Header */}
-      <header className="container mx-auto py-4 flex justify-between items-center">
+      <header className="container mx-auto py-4 flex justify-between items-center relative z-20">
         <div className="flex items-center gap-2">
           <Image
             src="/images/logo.png"
@@ -33,18 +36,26 @@ export default function ProgramacaoPage() {
           />
           <span className="font-bold text-lg">Arcoverde</span>
         </div>
-        <nav className="hidden md:flex gap-6">
-          <Link href="/" className="hover:text-yellow-400 transition-colors">
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-6">
+          <a href="#home" className="hover:text-yellow-400 transition-colors">
             Home
-          </Link>
-          <Link href="/programacao" className="text-yellow-400 font-bold">
+          </a>
+          <a href="#programacao" className="hover:text-yellow-400 transition-colors">
             Programação
-          </Link>
-          <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-1 hover:text-yellow-400 transition-colors focus:outline-none">
+          </a>
+          <DropdownMenu >
+            <DropdownMenuTrigger
+              className="flex items-center gap-1 hover:text-yellow-400 transition-colors focus:outline-none"
+
+            >
               Polos <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-[#0c1d52] border-blue-800 text-white">
+            <DropdownMenuContent
+              className="bg-[#0c1d52] border-blue-800 text-white"
+
+            >
               {polos.map((polo) => (
                 <DropdownMenuItem key={polo.slug} className="hover:bg-[#081235] cursor-pointer">
                   <Link href={`/polos/${polo.slug}`} className="w-full">
@@ -54,14 +65,98 @@ export default function ProgramacaoPage() {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Link href="#atracoes" className="hover:text-yellow-400 transition-colors">
-            Atrações
+          <Link href="/hoteis" className="hover:text-yellow-400 transition-colors">
+            Hotéis
           </Link>
-          <Link href="#local" className="hover:text-yellow-400 transition-colors">
+          <Link href="/servicos" className="hover:text-yellow-400 transition-colors">
+            Serviços
+          </Link>
+          <a href="#local" className="hover:text-yellow-400 transition-colors">
             Local
-          </Link>
+          </a>
         </nav>
-        <Button className="bg-red-600 hover:bg-red-700 text-white">Contato</Button>
+
+        {/* Mobile Menu Button */}
+        <div className="md:hidden flex items-center gap-2">
+          <button
+            className="text-white p-2"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              {isMobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+          <Button className="bg-red-600 hover:bg-red-700 text-white">Contato</Button>
+        </div>
+
+        {/* Desktop Contact Button */}
+        <Button className="hidden md:block bg-red-600 hover:bg-red-700 text-white">Contato</Button>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="absolute top-full left-0 right-0 bg-[#0c1d52] p-4 md:hidden z-50 border-t border-blue-800">
+            <nav className="flex flex-col gap-4">
+              <a
+                href="#home"
+                className="hover:text-yellow-400 transition-colors py-2"
+              >
+                Home
+              </a>
+              <a
+                href="#programacao"
+                className="hover:text-yellow-400 transition-colors py-2"
+              >
+                Programação
+              </a>
+              <div className="relative py-2">
+                <div className="font-medium mb-2">Polos</div>
+                <div className="pl-4 flex flex-col gap-2">
+                  {polos.map((polo) => (
+                    <Link
+                      key={polo.slug}
+                      href={`/polos/${polo.slug}`}
+                      className="text-gray-300 hover:text-yellow-400 transition-colors"
+                    >
+                      {polo.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              <Link
+                href="/hoteis"
+                className="hover:text-yellow-400 transition-colors py-2"
+
+              >
+                Hotéis
+              </Link>
+              <Link
+                href="/servicos"
+                className="hover:text-yellow-400 transition-colors py-2"
+
+              >
+                Serviços
+              </Link>
+              <a
+                href="#local"
+                className="hover:text-yellow-400 transition-colors py-2"
+
+              >
+                Local
+              </a>
+            </nav>
+          </div>
+        )}
       </header>
 
       {/* Page Title */}
@@ -173,9 +268,8 @@ export default function ProgramacaoPage() {
                       <div key={index} className="text-center p-2 hover:bg-[#081235] rounded transition-colors">
                         <div className="flex justify-center mb-1">
                           <span
-                            className={`text-xs px-2 py-0.5 rounded-full ${
-                              attraction.pole === "Principal" ? "bg-red-600 text-white" : "bg-blue-600 text-white"
-                            }`}
+                            className={`text-xs px-2 py-0.5 rounded-full ${attraction.pole === "Principal" ? "bg-red-600 text-white" : "bg-blue-600 text-white"
+                              }`}
                           >
                             {attraction.pole}
                           </span>
@@ -221,9 +315,8 @@ export default function ProgramacaoPage() {
                             <div className="flex flex-col items-center mt-1">
                               <span className="text-gray-300 text-sm">{attraction.time}</span>
                               <span
-                                className={`text-xs px-2 py-0.5 rounded-full mt-1 ${
-                                  attraction.pole === "Principal" ? "bg-red-600 text-white" : "bg-blue-600 text-white"
-                                }`}
+                                className={`text-xs px-2 py-0.5 rounded-full mt-1 ${attraction.pole === "Principal" ? "bg-red-600 text-white" : "bg-blue-600 text-white"
+                                  }`}
                               >
                                 {attraction.pole}
                               </span>
