@@ -7,7 +7,6 @@ import { Calendar, ChevronLeft, MapPin, Clock, Music } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 
-import { Header } from "@/components/molecules/header/header"
 
 // Define the types for our data
 type Attraction = {
@@ -47,9 +46,7 @@ export default function PoloPage({ params }: { params: { slug: string } }) {
 
 
   return (
-    <div className="min-h-screen bg-[#0a1744] text-white">
-      {/* Header */}
-      <Header />
+    <>
 
       {/* Page Title */}
       <div className="bg-[#0c1d52] py-8 border-y border-blue-800">
@@ -275,7 +272,7 @@ export default function PoloPage({ params }: { params: { slug: string } }) {
           </div>
         </div>
       </footer>
-    </div>
+    </>
   )
 }
 

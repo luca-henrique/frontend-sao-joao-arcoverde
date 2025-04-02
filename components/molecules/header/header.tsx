@@ -15,18 +15,14 @@ export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
-    <header className="container mx-auto py-4 flex justify-between items-center relative z-20 ">
-      <div className="flex items-center gap-2">
-        <Image
-          src="/images/logo.png"
-          alt="Prefeitura de Arcoverde"
-          width={50}
-          height={50}
-          className="object-contain"
-        />
-        <span className="font-bold text-lg">Arcoverde</span>
-      </div>
-
+    <header className="container mx-auto py-2 flex justify-between items-center relative z-20">
+      <Image
+        src="/images/logo.svg"
+        alt="Prefeitura de Arcoverde"
+        width={80}
+        height={80}
+        className="object-contain"
+      />
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-6">
         <a href="#home" className="hover:text-yellow-400 transition-colors">
