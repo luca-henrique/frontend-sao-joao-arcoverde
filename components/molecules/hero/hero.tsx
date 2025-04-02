@@ -56,8 +56,8 @@ export const Hero = () => {
   return (
     <section id="home" className="relative py-16 md:py-32 overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1744] to-[#0c1d52] opacity-90">a</div>
-        <div className="absolute w-full min-h-screen bg-cover inset-0 bg-[url('/images/stars-bg.png')] bg-no-repeat opacity-60 "></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1744] to-[#0c1d52] opacity-90" />
+        <div className="absolute w-full min-h-screen bg-cover inset-0 bg-[url('/images/stars-bg.png')] bg-no-repeat opacity-60 " />
       </div>
 
       {/* Decorative elements */}

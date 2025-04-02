@@ -25,10 +25,10 @@ export const Header = () => {
       />
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-6">
-        <a href="#home" className="hover:text-yellow-400 transition-colors">
-          Home
+        <a href="/" className="hover:text-yellow-400 transition-colors">
+          Inicio
         </a>
-        <a href="#programacao" className="hover:text-yellow-400 transition-colors">
+        <a href="/programacao" className="hover:text-yellow-400 transition-colors">
           Programação
         </a>
         <DropdownMenu >
@@ -57,7 +57,7 @@ export const Header = () => {
         <Link href="/servicos" className="hover:text-yellow-400 transition-colors">
           Serviços
         </Link>
-        <a href="#local" className="hover:text-yellow-400 transition-colors">
+        <a href="/#local" className="hover:text-yellow-400 transition-colors">
           Local
         </a>
       </nav>
@@ -94,11 +94,11 @@ export const Header = () => {
         <div className="absolute top-full left-0 right-0 bg-[#0c1d52] p-4 md:hidden z-50 border-t border-blue-800">
           <nav className="flex flex-col gap-4">
             <a
-              href="#home"
+              href="/"
               className="hover:text-yellow-400 transition-colors py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Home
+              Inicio
             </a>
             <a
               href="#programacao"

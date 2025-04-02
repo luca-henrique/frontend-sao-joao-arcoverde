@@ -1,10 +1,13 @@
 import type React from "react"
-import { Inter } from "next/font/google"
+import { Farro } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Header } from "@/components/molecules/header/header"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Farro({
+  weight: ["300", "400", "500", "700",],
+  subsets: ["latin"],
+})
 
 export const metadata = {
   title: "São João de Arcoverde 2025",
