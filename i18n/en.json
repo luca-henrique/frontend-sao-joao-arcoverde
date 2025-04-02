@@ -1,0 +1,90 @@
+{
+  "language": "Language",
+  "nav": {
+    "home": "Home",
+    "schedule": "Schedule",
+    "poles": "Venues",
+    "hotels": "Hotels",
+    "services": "Services",
+    "location": "Location",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title1": "SÃO JOÃO",
+    "title2": "ARCOVERDE",
+    "title3": "IS",
+    "title4": "AMAZING!!",
+    "dates": "JUNE 14-28",
+    "subtitle": "The best São João festival in the countryside! 2025",
+    "scheduleBtn": "View Schedule",
+    "locationBtn": "How to Get There"
+  },
+  "countdown": "Countdown",
+  "day": "DAY",
+  "days": "DAYS",
+  "schedule": {
+    "title1": "Unmissable",
+    "title2": "Schedule",
+    "viewAllBtn": "View Complete Schedule"
+  },
+  "allDays": {
+    "title1": "All",
+    "title2": "Days"
+  },
+  "features": {
+    "feature1": {
+      "title": "Great Attractions",
+      "description": "The best forró artists and Northeastern music gathered in one place."
+    },
+    "feature2": {
+      "title": "Prime Location",
+      "description": "Easy access and complete infrastructure for you to enjoy the best of São João."
+    },
+    "feature3": {
+      "title": "15 Days of Celebration",
+      "description": "From June 14 to 28, the biggest June festival in the countryside of Pernambuco."
+    }
+  },
+  "location": {
+    "title1": "How to",
+    "title2": "Get There",
+    "venueName": "São João de Arcoverde Event Park",
+    "address": {
+      "title": "Address",
+      "line1": "Av. Dom Pedro II, 1250",
+      "line2": "Downtown, Arcoverde - PE",
+      "line3": "ZIP: 56506-000"
+    },
+    "hours": {
+      "title": "Hours",
+      "line1": "Gates open: 6pm",
+      "line2": "Shows start: 8pm",
+      "line3": "Closing: 4am"
+    },
+    "directions": {
+      "title": "How to get there",
+      "line1": "5 minutes from downtown",
+      "line2": "Public transportation available",
+      "line3": "Free parking on site"
+    },
+    "mapBtn": "View on Google Maps"
+  },
+  "cta": {
+    "title": "Don't Miss the Biggest São João in the Countryside!",
+    "description": "Come celebrate with us the São João de Arcoverde 2025, with the best attractions and the most authentic June festival.",
+    "scheduleBtn": "Complete Schedule",
+    "locationBtn": "How to Get There"
+  },
+  "sponsors": {
+    "title1": "Our",
+    "title2": "Sponsors",
+    "description": "São João de Arcoverde 2025 is made possible with the support of these important institutions and companies.",
+    "cta": "Interested in sponsoring São João de Arcoverde 2025?",
+    "contactBtn": "Contact Us"
+  },
+  "footer": {
+    "city": "Arcoverde City Hall",
+    "department": "Department of Tourism, Sports and Events",
+    "copyright": "© 2025 São João de Arcoverde. All rights reserved."
+  }
+}

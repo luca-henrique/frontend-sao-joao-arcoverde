@@ -1,0 +1,90 @@
+{
+  "language": "Idioma",
+  "nav": {
+    "home": "Home",
+    "schedule": "Programação",
+    "poles": "Polos",
+    "hotels": "Hotéis",
+    "services": "Serviços",
+    "location": "Local",
+    "contact": "Contato"
+  },
+  "hero": {
+    "title1": "SÃO JOÃO",
+    "title2": "DE ARCOVERDE",
+    "title3": "É",
+    "title4": "SHOW!!",
+    "dates": "14 A 28 DE JUNHO",
+    "subtitle": "O melhor São João do Interior! 2025",
+    "scheduleBtn": "Ver Programação",
+    "locationBtn": "Como Chegar"
+  },
+  "countdown": "Contagem Regressiva",
+  "day": "DIA",
+  "days": "DIAS",
+  "schedule": {
+    "title1": "Programação",
+    "title2": "Imperdível",
+    "viewAllBtn": "Ver Programação Completa"
+  },
+  "allDays": {
+    "title1": "Todos os",
+    "title2": "Dias"
+  },
+  "features": {
+    "feature1": {
+      "title": "Grandes Atrações",
+      "description": "Os melhores artistas do forró e da música nordestina reunidos em um só lugar."
+    },
+    "feature2": {
+      "title": "Localização Privilegiada",
+      "description": "Fácil acesso e estrutura completa para você aproveitar o melhor do São João."
+    },
+    "feature3": {
+      "title": "15 Dias de Festa",
+      "description": "De 14 a 28 de junho, a maior festa junina do interior de Pernambuco."
+    }
+  },
+  "location": {
+    "title1": "Como",
+    "title2": "Chegar",
+    "venueName": "Parque de Eventos São João de Arcoverde",
+    "address": {
+      "title": "Endereço",
+      "line1": "Av. Dom Pedro II, 1250",
+      "line2": "Centro, Arcoverde - PE",
+      "line3": "CEP: 56506-000"
+    },
+    "hours": {
+      "title": "Horários",
+      "line1": "Abertura dos portões: 18h",
+      "line2": "Início dos shows: 20h",
+      "line3": "Encerramento: 4h"
+    },
+    "directions": {
+      "title": "Como chegar",
+      "line1": "A 5 minutos do centro da cidade",
+      "line2": "Transporte público disponível",
+      "line3": "Estacionamento gratuito no local"
+    },
+    "mapBtn": "Ver no Google Maps"
+  },
+  "cta": {
+    "title": "Não Perca o Maior São João do Interior!",
+    "description": "Venha celebrar conosco o São João de Arcoverde 2025, com as melhores atrações e a mais autêntica festa junina.",
+    "scheduleBtn": "Programação Completa",
+    "locationBtn": "Como Chegar"
+  },
+  "sponsors": {
+    "title1": "Nossos",
+    "title2": "Patrocinadores",
+    "description": "O São João de Arcoverde 2025 é realizado com o apoio destas importantes instituições e empresas.",
+    "cta": "Interessado em patrocinar o São João de Arcoverde 2025?",
+    "contactBtn": "Entre em Contato"
+  },
+  "footer": {
+    "city": "Prefeitura de Arcoverde",
+    "department": "Secretaria de Turismo, Esportes e Eventos",
+    "copyright": "© 2025 São João de Arcoverde. Todos os direitos reservados."
+  }
+}

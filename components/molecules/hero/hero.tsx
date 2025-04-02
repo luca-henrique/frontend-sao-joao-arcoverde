@@ -1,7 +1,6 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { useState, useEffect } from "react"
 import { CountdownTimer } from "../countdown-time/countdown-time"
 import Image from "next/image"
 import Logo from "@/assets/Logo1.svg"
@@ -19,13 +18,13 @@ export const Hero = () => {
         <div
           className="absolute inset-0 rounded-full bg-yellow-400 animate-pulse"
           style={{ animationDuration: "4s" }}
-        ></div>
+        />
       </div>
       <div className="absolute bottom-10 right-10 md:right-20 w-16 h-16 md:w-24 md:h-24 opacity-20 md:opacity-30">
         <div
           className="absolute inset-0 rounded-full bg-red-500 animate-pulse"
           style={{ animationDuration: "5s" }}
-        ></div>
+        />
       </div>
 
       <div className="container mx-auto relative z-10">
