@@ -5,9 +5,8 @@ import type React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Calendar, ChevronLeft, MapPin, Phone, Star, Wifi, Coffee, Car, Bath, ChevronDown } from "lucide-react"
+import { Calendar, ChevronLeft, MapPin, Phone, Star, Wifi, Coffee, Car, Bath } from "lucide-react"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useState } from "react"
 
 // Define types for our hotel data
