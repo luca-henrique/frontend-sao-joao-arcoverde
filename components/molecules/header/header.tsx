@@ -7,9 +7,8 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { polos } from "@/constants/polos"
-import { getDictionary } from "@/i18n"
 import { useParams } from "next/navigation"
 import LanguageSwitcher from "../language-switch/language-switch"
 import { useDictionary } from "@/hooks/use-dictionary"
@@ -17,30 +16,12 @@ import { useDictionary } from "@/hooks/use-dictionary"
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [dictionary, setDictionary] = useState<any>(null)
 
-  const example = useDictionary()
+  const dictionary: any = useDictionary()
 
   const params = useParams()
+  const lang = Array.isArray(params.lang) ? params.lang[0] : params.lang;
 
-  console.log(example)
-
-  useEffect(() => {
-    async function loadDictionary() {
-      const lang = Array.isArray(params.lang) ? params.lang[0] : params.lang;
-      const dict = await getDictionary(lang ?? 'pt');
-      setDictionary(dict)
-    }
-    loadDictionary()
-  }, [params.lang])
-
-  if (!dictionary) {
-    return (
-      <div className="min-h-screen bg-[#0a1744] flex items-center justify-center">
-        <div className="animate-spin h-8 w-8 border-4 border-white border-t-transparent rounded-full"></div>
-      </div>
-    )
-  }
 
   return (
     <header className="container mx-auto py-2 flex justify-between items-center relative z-20">
@@ -90,7 +71,7 @@ export const Header = () => {
         </a>
 
         {/* Language Switcher */}
-        <LanguageSwitcher currentLang={params.lang} />
+        <LanguageSwitcher currentLang={lang} />
       </nav>
 
       {/* Mobile Menu Button */}
@@ -114,37 +95,41 @@ export const Header = () => {
             )}
           </svg>
         </button>
-        <Button className="bg-red-600 hover:bg-red-700 text-white">Contato</Button>
+        <Link href={`/${params.lang}/contato`}>
+          <Button className="bg-red-600 hover:bg-red-700 text-white">{dictionary.nav.contact}</Button>
+        </Link>
       </div>
 
       {/* Desktop Contact Button */}
-      <Button className="hidden md:block bg-red-600 hover:bg-red-700 text-white">Contato</Button>
+      <Link href={`/${params.lang}/contato`} className="hidden md:block">
+        <Button className="bg-red-600 hover:bg-red-700 text-white">{dictionary.nav.contact}</Button>
+      </Link>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="absolute top-full left-0 right-0 bg-[#0c1d52] p-4 md:hidden z-50 border-t border-blue-800">
           <nav className="flex flex-col gap-4">
             <a
-              href="/"
+              href="#home"
               className="hover:text-yellow-400 transition-colors py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Inicio
+              {dictionary.nav.home}
             </a>
             <a
               href="#programacao"
               className="hover:text-yellow-400 transition-colors py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Programação
+              {dictionary.nav.schedule}
             </a>
             <div className="relative py-2">
-              <div className="font-medium mb-2">Polos</div>
+              <div className="font-medium mb-2">{dictionary.nav.poles}</div>
               <div className="pl-4 flex flex-col gap-2">
                 {polos.map((polo) => (
                   <Link
                     key={polo.slug}
-                    href={`/polos/${polo.slug}`}
+                    href={`/${params.lang}/polos/${polo.slug}`}
                     className="text-gray-300 hover:text-yellow-400 transition-colors"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
@@ -154,26 +139,54 @@ export const Header = () => {
               </div>
             </div>
             <Link
-              href="/hoteis"
+              href={`/${params.lang}/hoteis`}
               className="hover:text-yellow-400 transition-colors py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Hotéis
+              {dictionary.nav.hotels}
             </Link>
             <Link
-              href="/servicos"
+              href={`/${params.lang}/servicos`}
               className="hover:text-yellow-400 transition-colors py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Serviços
+              {dictionary.nav.services}
             </Link>
             <a
               href="#local"
               className="hover:text-yellow-400 transition-colors py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Local
+              {dictionary.nav.location}
             </a>
+
+            {/* Mobile Language Switcher */}
+            <div className="py-2 border-t border-blue-800 mt-2">
+              <div className="font-medium mb-2">{dictionary.language}</div>
+              <div className="pl-4 flex flex-col gap-2">
+                <Link
+                  href="/pt"
+                  className={`${params.lang === "pt" ? "text-yellow-400 font-bold" : "text-gray-300"} hover:text-yellow-400 transition-colors`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Português
+                </Link>
+                <Link
+                  href="/en"
+                  className={`${params.lang === "en" ? "text-yellow-400 font-bold" : "text-gray-300"} hover:text-yellow-400 transition-colors`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  English
+                </Link>
+                <Link
+                  href="/es"
+                  className={`${params.lang === "es" ? "text-yellow-400 font-bold" : "text-gray-300"} hover:text-yellow-400 transition-colors`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Español
+                </Link>
+              </div>
+            </div>
           </nav>
         </div>
       )}

@@ -5,7 +5,7 @@ import Link from "next/link"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useState } from "react"
 
-export default function LanguageSwitcher({ currentLang }: { currentLang: string }) {
+export default function LanguageSwitcher({ currentLang = "pt" }: { currentLang?: string }) {
   const [open, setOpen] = useState(false)
 
   const languages = [

@@ -4,7 +4,7 @@ import { createContext, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { getDictionary } from '@/i18n';
 
-interface Dictionary {
+export interface Dictionary {
   [key: string]: string;
 }
 

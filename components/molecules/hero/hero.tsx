@@ -4,8 +4,15 @@ import Link from "next/link"
 import { CountdownTimer } from "../countdown-time/countdown-time"
 import Image from "next/image"
 import Logo from "@/assets/Logo1.svg"
+import { useDictionary } from "@/hooks/use-dictionary"
+import { useParams } from "next/navigation"
 
 export const Hero = () => {
+
+  const dictionary: any = useDictionary()
+  const params = useParams()
+  const lang = Array.isArray(params.lang) ? params.lang[0] : params.lang;
+
   return (
     <section id="home" className="relative py-16 md:py-4 overflow-hidden h-screen">
       <div className="absolute inset-0 z-0">
@@ -36,7 +43,7 @@ export const Hero = () => {
             <Image src={Logo} width={600} alt="logo" className="bg-cover" />
 
             <div className="space-y-4 mb-8">
-              <p className="text-2xl md:text-3xl text-teal-300 font-bold flavors-font mb-1">14 A 28 DE JUNHO de 2025</p>
+              <p className="text-2xl md:text-3xl text-teal-300 font-bold flavors-font mb-1">{dictionary.hero.dates}</p>
 
               <div className="mt-6">
                 <CountdownTimer targetDate="2025-06-14" />
@@ -44,14 +51,14 @@ export const Hero = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-              <Link href="/programacao">
+              <Link href={`/${lang}/programacao`}>
                 <Button className="bg-red-600 hover:bg-red-700 text-white text-lg py-6 px-8 rounded-full shadow-lg transform transition hover:scale-105">
-                  Ver Programação
+                  {dictionary.hero.scheduleBtn}
                 </Button>
               </Link>
-              <a href="#local">
+              <a href={`/${lang}/programacao`}>
                 <Button className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold text-lg py-6 px-8 rounded-full shadow-lg transform transition hover:scale-105">
-                  Como Chegar
+                  {dictionary.hero.locationBtn}
                 </Button>
               </a>
             </div>
