@@ -294,6 +294,95 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Sponsors Section */}
+      <section className="py-16 bg-[#0c1d52] relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/stars-bg.png')] bg-cover bg-center bg-no-repeat opacity-20"></div>
+        <div className="container mx-auto relative z-10">
+          <h2 className="text-4xl font-bold text-center mb-2">
+            <span className="text-white">Nossos</span>
+            <span className="text-yellow-400"> Patrocinadores</span>
+          </h2>
+          <p className="text-gray-300 text-center max-w-2xl mx-auto mb-12">
+            O São João de Arcoverde 2025 é realizado com o apoio destas importantes instituições e empresas.
+          </p>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 items-center">
+            {/* Skol */}
+            <div className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center h-32">
+              <Image
+                src="/placeholder.svg?height=80&width=120"
+                alt="Skol"
+                width={120}
+                height={80}
+                className="object-contain"
+              />
+            </div>
+
+            {/* Governo de Pernambuco */}
+            <div className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center h-32">
+              <Image
+                src="/placeholder.svg?height=80&width=120"
+                alt="Governo de Pernambuco"
+                width={120}
+                height={80}
+                className="object-contain"
+              />
+            </div>
+
+            {/* SEBRAE */}
+            <div className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center h-32">
+              <Image
+                src="/placeholder.svg?height=80&width=120"
+                alt="SEBRAE"
+                width={120}
+                height={80}
+                className="object-contain"
+              />
+            </div>
+
+            {/* Banco do Nordeste */}
+            <div className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center h-32">
+              <Image
+                src="/placeholder.svg?height=80&width=120"
+                alt="Banco do Nordeste"
+                width={120}
+                height={80}
+                className="object-contain"
+              />
+            </div>
+
+            {/* Ministério do Turismo */}
+            <div className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center h-32">
+              <Image
+                src="/placeholder.svg?height=80&width=120"
+                alt="Ministério do Turismo"
+                width={120}
+                height={80}
+                className="object-contain"
+              />
+            </div>
+
+            {/* Ministério da Cultura */}
+            <div className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center h-32">
+              <Image
+                src="/placeholder.svg?height=80&width=120"
+                alt="Ministério da Cultura"
+                width={120}
+                height={80}
+                className="object-contain"
+              />
+            </div>
+          </div>
+
+          <div className="mt-12 text-center">
+            <p className="text-gray-300 text-lg">Interessado em patrocinar o São João de Arcoverde 2025?</p>
+            <Link href="/contato" className="inline-block mt-4">
+              <Button className="bg-red-600 hover:bg-red-700 text-white">Entre em Contato</Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-[#081235] py-8">
         <div className="container mx-auto">
