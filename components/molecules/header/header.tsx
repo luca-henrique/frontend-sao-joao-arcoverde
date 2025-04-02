@@ -7,12 +7,40 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { polos } from "@/constants/polos"
+import { getDictionary } from "@/i18n"
+import { useParams } from "next/navigation"
+import LanguageSwitcher from "../language-switch/language-switch"
+import { useDictionary } from "@/hooks/use-dictionary"
 
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [dictionary, setDictionary] = useState<any>(null)
+
+  const example = useDictionary()
+
+  const params = useParams()
+
+  console.log(example)
+
+  useEffect(() => {
+    async function loadDictionary() {
+      const lang = Array.isArray(params.lang) ? params.lang[0] : params.lang;
+      const dict = await getDictionary(lang ?? 'pt');
+      setDictionary(dict)
+    }
+    loadDictionary()
+  }, [params.lang])
+
+  if (!dictionary) {
+    return (
+      <div className="min-h-screen bg-[#0a1744] flex items-center justify-center">
+        <div className="animate-spin h-8 w-8 border-4 border-white border-t-transparent rounded-full"></div>
+      </div>
+    )
+  }
 
   return (
     <header className="container mx-auto py-2 flex justify-between items-center relative z-20">
@@ -25,18 +53,18 @@ export const Header = () => {
       />
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-6">
-        <a href="/" className="hover:text-yellow-400 transition-colors">
-          Inicio
+        <a href={`/${params.lang}`} className="hover:text-yellow-400 transition-colors">
+          {dictionary.nav.home}
         </a>
-        <a href="/programacao" className="hover:text-yellow-400 transition-colors">
-          Programação
+        <a href={`/${params.lang}/programacao`} className="hover:text-yellow-400 transition-colors">
+          {dictionary.nav.schedule}
         </a>
         <DropdownMenu >
           <DropdownMenuTrigger
             className="flex items-center gap-1 hover:text-yellow-400 transition-colors focus:outline-none"
 
           >
-            Polos <ChevronDown className="h-4 w-4" />
+            {dictionary.nav.poles} <ChevronDown className="h-4 w-4" />
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="bg-[#0c1d52] border-blue-800 text-white"
@@ -44,22 +72,25 @@ export const Header = () => {
           >
             {polos.map((polo) => (
               <DropdownMenuItem key={polo.slug} className="hover:bg-[#081235] cursor-pointer">
-                <Link href={`/polos/${polo.slug}`} className="w-full">
+                <Link href={`/${params.lang}/polos/${polo.slug}`} className="w-full">
                   {polo.name}
                 </Link>
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Link href="/hoteis" className="hover:text-yellow-400 transition-colors">
-          Hotéis
+        <Link href={`/${params.lang}/hoteis`} className="hover:text-yellow-400 transition-colors">
+          {dictionary.nav.hotels}
         </Link>
-        <Link href="/servicos" className="hover:text-yellow-400 transition-colors">
-          Serviços
+        <Link href={`/${params.lang}/servicos`} className="hover:text-yellow-400 transition-colors">
+          {dictionary.nav.services}
         </Link>
-        <a href="/#local" className="hover:text-yellow-400 transition-colors">
-          Local
+        <a href="#local" className="hover:text-yellow-400 transition-colors">
+          {dictionary.nav.location}
         </a>
+
+        {/* Language Switcher */}
+        <LanguageSwitcher currentLang={params.lang} />
       </nav>
 
       {/* Mobile Menu Button */}

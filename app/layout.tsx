@@ -3,6 +3,7 @@ import { Farro, Flavors } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Header } from "@/components/molecules/header/header"
 
+
 import "./globals.css"
 
 
@@ -31,10 +32,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={`${farro.className} ${flavors.className} `}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <div className="min-h-screen w-full bg-[#0a1744] text-white">
-            <Header />
-            {children}
-          </div>
+          {children}
         </ThemeProvider>
       </body>
     </html>
