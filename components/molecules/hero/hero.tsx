@@ -57,7 +57,7 @@ export const Hero = () => {
     <section id="home" className="relative py-16 md:py-32 overflow-hidden">
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a1744] to-[#0c1d52] opacity-90"></div>
-        <div className="absolute inset-0 bg-[url('/images/stars-bg.png')] bg-repeat opacity-50"></div>
+        <div className="absolute inset-0 bg-[url('/images/stars-bg.png')] bg-no-repeat opacity-60 bg-contain h-screen"></div>
       </div>
 
       {/* Decorative elements */}
@@ -76,25 +76,9 @@ export const Hero = () => {
 
       <div className="container mx-auto relative z-10">
         <div className="flex flex-col items-center text-center">
-          <div className="relative mb-6">
-            <Image
-              src="/images/moon.png"
-              alt="Lua"
-              width={80}
-              height={80}
-              className="animate-pulse"
-              style={{ animationDuration: "6s" }}
-            />
-          </div>
 
           <div className="relative max-w-4xl mx-auto">
-            <Image
-              src="/images/flags.png"
-              alt="Bandeirinhas"
-              width={120}
-              height={60}
-              className="absolute -top-10 right-0 md:-top-12 md:right-0 md:w-32"
-            />
+
 
             <div className="relative z-10 mb-8">
               <h1 className="text-6xl md:text-8xl font-bold mb-2 text-shadow-lg drop-shadow-lg">
@@ -114,7 +98,6 @@ export const Hero = () => {
               <p className="text-2xl md:text-3xl text-teal-300 font-bold">14 A 28 DE JUNHO</p>
               <p className="text-xl md:text-2xl text-yellow-400">O melhor São João do Interior! 2025</p>
 
-              {/* Countdown Timer */}
               <div className="mt-6">
                 <CountdownTimer targetDate="2025-06-14" />
               </div>
@@ -136,19 +119,7 @@ export const Hero = () => {
         </div>
       </div>
 
-      <div className="relative h-32 mt-12">
-        <div className="absolute bottom-0 left-0 right-0">
-          <div className="flex justify-between items-end">
-            <div className="flex gap-1">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="w-8 h-16 md:w-12 md:h-24 bg-yellow-800 rounded-t-lg"></div>
-              ))}
-            </div>
-            <Image src="/images/accordion.png" alt="Acordeão" width={200} height={200} className="mr-4 mb-4" />
-          </div>
-          <div className="h-8 bg-red-600"></div>
-        </div>
-      </div>
+
     </section>
   )
 }
