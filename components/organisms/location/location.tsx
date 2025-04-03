@@ -1,5 +1,6 @@
 'use client'
 
+import { EventMap } from "@/components/molecules/event-map/event-map";
 import { Button } from "@/components/ui/button";
 import { useDictionary } from "@/hooks/use-dictionary";
 
@@ -17,19 +18,7 @@ export const Location = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Map */}
-          <div className="rounded-lg overflow-hidden shadow-lg h-[400px] md:h-[500px]">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31559.02580989655!2d-37.07688368700576!3d-8.424344042880352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7a98769f2e4d13d%3A0x96e7c63b83029a7!2sArcoverde%2C%20PE%2C%20Brasil!5e0!3m2!1spt-BR!2sbr!4v1711932000000!5m2!1spt-BR!2sbr"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Mapa do local do evento"
-              className="w-full h-full"
-            ></iframe>
-          </div>
+          <EventMap />
 
           {/* Address and Info */}
           <div className="bg-[#081235] p-8 rounded-lg shadow-lg flex flex-col justify-between">

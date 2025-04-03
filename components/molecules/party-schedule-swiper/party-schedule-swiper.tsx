@@ -49,6 +49,7 @@ export const PartyScheduleSwiper = () => {
             <TabsList className="grid grid-cols-5 bg-[#0c1d52] p-0 rounded-lg overflow-hidden">
               {allDays.slice(0, 5).map((day) => (
                 <TabsTrigger
+                  aria-controls="radix-tab-content-junho"
                   key={day.date}
                   value={day.date}
                   className={`py-3 px-4 data-[state=active]:bg-white data-[state=active]:text-[#0a1744] data-[state=active]:shadow-none transition-colors`}
