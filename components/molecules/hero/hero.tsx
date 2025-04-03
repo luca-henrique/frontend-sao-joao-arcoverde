@@ -17,14 +17,14 @@ export const Hero = () => {
       id="home"
       className="relative py-16 md:py-4 overflow-hidden h-screen"
     >
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 w-full h-screen">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a1744] to-[#0c1d52] opacity-90" />
         <Image
           src="/images/stars-bg.webp"
-          width={100}
-          height={100}
+          layout="fill"
+          objectFit="cover"
           alt="background image hero"
-          className="absolute w-full min-h-screen bg-cover inset-0 bg-no-repeat opacity-60"
+          className="absolute w-full h-[823px] md:w-full md:h-screen bg-cover inset-0 bg-no-repeat opacity-50 "
         />
       </div>
 
