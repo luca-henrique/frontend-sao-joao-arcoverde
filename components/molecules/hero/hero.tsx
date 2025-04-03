@@ -1,23 +1,31 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { CountdownTimer } from "../countdown-time/countdown-time"
-import Image from "next/image"
-import Logo from "@/assets/Logo1.svg"
-import { useDictionary } from "@/hooks/use-dictionary"
-import { useParams } from "next/navigation"
+"use client";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { CountdownTimer } from "../countdown-time/countdown-time";
+import Image from "next/image";
+import Logo from "@/assets/Logo1.svg";
+import { useDictionary } from "@/hooks/use-dictionary";
+import { useParams } from "next/navigation";
 
 export const Hero = () => {
-
-  const dictionary: any = useDictionary()
-  const params = useParams()
+  const dictionary: any = useDictionary();
+  const params = useParams();
   const lang = Array.isArray(params.lang) ? params.lang[0] : params.lang;
 
   return (
-    <section id="home" className="relative py-16 md:py-4 overflow-hidden h-screen">
+    <section
+      id="home"
+      className="relative py-16 md:py-4 overflow-hidden h-screen"
+    >
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a1744] to-[#0c1d52] opacity-90" />
-        <div className="absolute w-full min-h-screen bg-cover inset-0 bg-[url('/images/stars-bg.webp')] bg-no-repeat opacity-60 " />
+        <Image
+          src="/images/stars-bg.webp"
+          width={100}
+          height={100}
+          alt="background image hero"
+          className="absolute w-full min-h-screen bg-cover inset-0 bg-no-repeat opacity-60"
+        />
       </div>
 
       {/* Decorative elements */}
@@ -36,14 +44,13 @@ export const Hero = () => {
 
       <div className="container mx-auto relative z-10">
         <div className="flex flex-col items-center text-center">
-
           <div className="relative max-w-4xl mx-auto">
-
-
             <Image src={Logo} width={600} alt="logo" className="bg-cover" />
 
             <div className="space-y-4 mb-8">
-              <p className="text-2xl md:text-3xl text-teal-300 font-bold flavors-font mb-1">{dictionary.hero.dates}</p>
+              <p className="text-2xl md:text-3xl text-teal-300 font-bold flavors-font mb-1">
+                {dictionary.hero.dates}
+              </p>
 
               <div className="mt-6">
                 <CountdownTimer targetDate="2025-06-14" />
@@ -65,8 +72,6 @@ export const Hero = () => {
           </div>
         </div>
       </div>
-
-
     </section>
-  )
-}
+  );
+};
