@@ -20,7 +20,7 @@ export const Hero = () => {
       <div className="absolute inset-0 z-0 w-full h-screen">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a1744] to-[#0c1d52] opacity-90" />
         <Image
-          src="/images/stars-bg.webp"
+          src="/images/stars-bg.avif"
           layout="fill"
           priority
           objectFit="cover"
