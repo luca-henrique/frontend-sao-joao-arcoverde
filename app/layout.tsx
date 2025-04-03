@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 
 
 import "./globals.css"
+import Head from "next/head"
 
 
 const farro = Farro({
@@ -30,6 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
+
       <body className={`${farro.className} ${flavors.className} `}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           {children}
