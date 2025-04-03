@@ -8,9 +8,33 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Footer } from "@/components/molecules/footer/footer"
+import { useState } from "react"
 
 
 export default function ProgramacaoPage() {
+
+  const [selectedArtist, setSelectedArtist] = useState("");
+  const [selectedDay, setSelectedDay] = useState("all");
+  const [selectedPole, setSelectedPole] = useState("");
+
+  const allDays = new Set(scheduleData.map(day => day.date));
+  const allPoles = new Set(scheduleData.flatMap(day => day.attractions.map(attraction => attraction.pole)));
+
+
+
+  const filteredSchedule = scheduleData
+    .filter((day) => selectedDay === "all" || day.date === selectedDay)
+    .map((day) => ({
+      ...day,
+      attractions: day.attractions.filter(
+        (attraction) =>
+          (selectedArtist === "" || attraction.name.toLowerCase().includes(selectedArtist.toLowerCase())) &&
+          (selectedPole === "all" || attraction.pole === selectedPole)
+      ),
+    }))
+    .filter((day) => day.attractions.length > 0);
+
+
 
   return (
     <>
@@ -41,51 +65,38 @@ export default function ProgramacaoPage() {
               <Input
                 placeholder="Buscar artista ou atração..."
                 className="pl-10 bg-[#081235] border-blue-800 text-white"
+                onChange={(event) => setSelectedArtist(event.target.value)}
               />
             </div>
             <div className="flex flex-wrap gap-2">
-              <Select>
+              <Select onValueChange={(e) => setSelectedDay(e)}>
                 <SelectTrigger className="w-[180px] bg-[#081235] border-blue-800 text-white">
                   <SelectValue placeholder="Filtrar por dia" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#081235] border-blue-800 text-white">
+                <SelectContent className="bg-[#081235] border-blue-800 text-white" >
                   <SelectItem value="all">Todos os dias</SelectItem>
-                  <SelectItem value="14">14 de Junho</SelectItem>
-                  <SelectItem value="15">15 de Junho</SelectItem>
-                  <SelectItem value="16">16 de Junho</SelectItem>
-                  <SelectItem value="17">17 de Junho</SelectItem>
-                  <SelectItem value="18">18 de Junho</SelectItem>
-                  <SelectItem value="19">19 de Junho</SelectItem>
-                  <SelectItem value="20">20 de Junho</SelectItem>
-                  <SelectItem value="21">21 de Junho</SelectItem>
-                  <SelectItem value="22">22 de Junho</SelectItem>
-                  <SelectItem value="23">23 de Junho</SelectItem>
-                  <SelectItem value="24">24 de Junho</SelectItem>
-                  <SelectItem value="25">25 de Junho</SelectItem>
-                  <SelectItem value="26">26 de Junho</SelectItem>
-                  <SelectItem value="27">27 de Junho</SelectItem>
-                  <SelectItem value="28">28 de Junho</SelectItem>
+                  {Array.from(allDays).map((day) => (
+                    <SelectItem key={day} value={day}>
+                      {day}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
-              <Select>
+              <Select onValueChange={(e) => setSelectedPole(e)}>
                 <SelectTrigger className="w-[180px] bg-[#081235] border-blue-800 text-white">
                   <SelectValue placeholder="Filtrar por polo" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#081235] border-blue-800 text-white">
                   <SelectItem value="all">Todos os polos</SelectItem>
-                  <SelectItem value="principal">Polo Principal</SelectItem>
-                  <SelectItem value="cruzeiro">Polo do Cruzeiro</SelectItem>
-                  <SelectItem value="poesia">Polo da Poesia</SelectItem>
-                  <SelectItem value="gospel">Polo Gospel</SelectItem>
-                  <SelectItem value="quadrilhas">Polo das Quadrilhas</SelectItem>
-                  <SelectItem value="gastronomico">Polo Gastronômico</SelectItem>
-                  <SelectItem value="cultural">Polo Cultural</SelectItem>
+                  {Array.from(allPoles).map((pole) => (
+                    <SelectItem key={pole} value={pole}>
+                      {pole}
+                    </SelectItem>
+                  ))}
+
                 </SelectContent>
               </Select>
-              <Button variant="outline" className="border-blue-800 text-white">
-                <Filter className="w-4 h-4 mr-2" />
-                Mais Filtros
-              </Button>
+
             </div>
           </div>
         </div>
@@ -107,7 +118,7 @@ export default function ProgramacaoPage() {
 
           <TabsContent value="grid" className="mt-0">
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-              {scheduleData.map((day) => (
+              {filteredSchedule.map((day) => (
                 <div key={day.date} className="bg-[#0c1d52] p-4 rounded-lg border border-blue-800">
                   <div className="flex items-center justify-center gap-2 mb-4 pb-2 border-b border-blue-800">
                     <div className="flex flex-col items-center">
