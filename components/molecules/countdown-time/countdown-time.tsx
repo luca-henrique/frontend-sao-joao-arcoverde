@@ -1,3 +1,5 @@
+"use client"
+
 import { useDictionary } from "@/hooks/use-dictionary"
 import { useEffect, useState } from "react"
 

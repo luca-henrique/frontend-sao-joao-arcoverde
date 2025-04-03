@@ -1,7 +1,7 @@
 import type React from "react"
 import { Farro, Flavors } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Header } from "@/components/molecules/header/header"
+
 
 
 import "./globals.css"

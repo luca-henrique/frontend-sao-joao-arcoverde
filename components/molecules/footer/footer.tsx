@@ -1,3 +1,5 @@
+"use client"
+
 import { useDictionary } from "@/hooks/use-dictionary";
 import Image from "next/image";
 

@@ -66,9 +66,7 @@ export const Header = () => {
         <Link href={`/${params.lang}/servicos`} className="hover:text-yellow-400 transition-colors">
           {dictionary.nav.services}
         </Link>
-        <a href="#local" className="hover:text-yellow-400 transition-colors">
-          {dictionary.nav.location}
-        </a>
+
 
         {/* Language Switcher */}
         <LanguageSwitcher currentLang={lang} />
@@ -152,13 +150,6 @@ export const Header = () => {
             >
               {dictionary.nav.services}
             </Link>
-            <a
-              href="#local"
-              className="hover:text-yellow-400 transition-colors py-2"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              {dictionary.nav.location}
-            </a>
 
             {/* Mobile Language Switcher */}
             <div className="py-2 border-t border-blue-800 mt-2">

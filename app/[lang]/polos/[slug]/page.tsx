@@ -6,8 +6,6 @@ import { Button } from "@/components/ui/button"
 import { Calendar, ChevronLeft, MapPin, Clock, Music } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-
-
 // Define the types for our data
 type Attraction = {
   name: string

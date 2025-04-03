@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useState, type FormEvent } from "react"
 import { toast } from "@/hooks/use-toast"
+import { Footer } from "@/components/molecules/footer/footer"
 
 export default function ContatoPage() {
 
@@ -18,8 +19,6 @@ export default function ContatoPage() {
     email: "",
     message: ""
   })
-
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -315,6 +314,7 @@ export default function ContatoPage() {
           </p>
         </div>
       </section>
+      <Footer />
     </div>
   )
 }
