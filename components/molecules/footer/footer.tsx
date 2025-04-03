@@ -13,7 +13,7 @@ export const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-4 mb-4 md:mb-0">
             <Image
-              src="/images/logo.png"
+              src="/images/logo.svg"
               alt="Prefeitura de Arcoverde"
               width={80}
               height={80}
