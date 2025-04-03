@@ -3,37 +3,39 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Calendar, ChevronLeft, Filter, Search } from "lucide-react"
+import { Calendar, ChevronLeft, Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Footer } from "@/components/molecules/footer/footer"
-import { useState } from "react"
+import { useMemo, useState } from "react"
+import { useDebounce } from "@/hooks/use-debounce"
 
 
 export default function ProgramacaoPage() {
 
   const [selectedArtist, setSelectedArtist] = useState("");
   const [selectedDay, setSelectedDay] = useState("all");
-  const [selectedPole, setSelectedPole] = useState("");
+  const [selectedPole, setSelectedPole] = useState("all");
 
   const allDays = new Set(scheduleData.map(day => day.date));
   const allPoles = new Set(scheduleData.flatMap(day => day.attractions.map(attraction => attraction.pole)));
 
+  const debouneArtist = useDebounce(selectedArtist, 2400);
 
 
-  const filteredSchedule = scheduleData
+
+  const filteredSchedule = useMemo(() => scheduleData
     .filter((day) => selectedDay === "all" || day.date === selectedDay)
     .map((day) => ({
       ...day,
       attractions: day.attractions.filter(
         (attraction) =>
-          (selectedArtist === "" || attraction.name.toLowerCase().includes(selectedArtist.toLowerCase())) &&
+          (debouneArtist === "" || attraction.name.toLowerCase().includes(debouneArtist.toLowerCase())) &&
           (selectedPole === "all" || attraction.pole === selectedPole)
       ),
     }))
-    .filter((day) => day.attractions.length > 0);
-
+    .filter((day) => day.attractions.length > 0), [debouneArtist, selectedPole, selectedDay]);
 
 
   return (
