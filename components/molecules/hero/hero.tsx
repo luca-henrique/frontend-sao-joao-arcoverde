@@ -22,8 +22,10 @@ export const Hero = () => {
         <Image
           src="/images/stars-bg.webp"
           layout="fill"
+          priority
           objectFit="cover"
           alt="background image hero"
+          quality={75}
           className="absolute w-full h-[823px] md:w-full md:h-screen bg-cover inset-0 bg-no-repeat opacity-50 "
         />
       </div>
