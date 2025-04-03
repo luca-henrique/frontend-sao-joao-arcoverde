@@ -17,7 +17,7 @@ export const Hero = () => {
     <section id="home" className="relative py-16 md:py-4 overflow-hidden h-screen">
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a1744] to-[#0c1d52] opacity-90" />
-        <div className="absolute w-full min-h-screen bg-cover inset-0 bg-[url('/images/stars-bg.png')] bg-no-repeat opacity-60 " />
+        <div className="absolute w-full min-h-screen bg-cover inset-0 bg-[url('/images/stars-bg.webp')] bg-no-repeat opacity-60 " />
       </div>
 
       {/* Decorative elements */}
