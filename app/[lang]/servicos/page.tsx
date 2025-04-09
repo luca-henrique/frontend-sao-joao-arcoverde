@@ -24,23 +24,9 @@ type Service = {
 }
 
 export default function ServicosPage() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [open, setOpen] = useState(false)
-
-  const polos = [
-    { name: "Polo do Cruzeiro", slug: "cruzeiro" },
-    { name: "Polo da Poesia", slug: "poesia" },
-    { name: "Polo Gospel", slug: "gospel" },
-    { name: "Polo das Quadrilhas", slug: "quadrilhas" },
-    { name: "Polo Gastronômico", slug: "gastronomico" },
-    { name: "Polo Cultural", slug: "cultural" },
-  ]
 
   return (
     <>
-
-
-      {/* Page Title */}
       <div className="bg-[#0c1d52] py-8 border-y border-blue-800">
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">

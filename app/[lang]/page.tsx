@@ -11,7 +11,6 @@ import { Sponsors } from "@/components/molecules/sponsors/sponsors"
 export default function Home() {
   return (
     <>
-
       <Hero />
       <PartyScheduleSwiper />
       <Features />
