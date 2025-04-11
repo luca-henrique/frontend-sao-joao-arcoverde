@@ -2,7 +2,6 @@
 
 import { useDictionary } from "@/hooks/use-dictionary"
 import { useState } from "react"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { allDays, Attraction } from "@/constants/all-days"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -62,8 +61,8 @@ export const PartyScheduleSwiper = () => {
                       key={formattedDate}
                       onClick={() => setActiveDay(formattedDate)}
                       className={`flex flex-col items-center justify-center min-w-[80px] py-3 px-4 rounded-lg transition-all ${activeDay === formattedDate
-                          ? "bg-[#FFF1B8] text-[#071242] shadow-lg transform scale-105 font-bold"
-                          : "bg-[#1C2769] text-white hover:bg-[#27348B]"
+                        ? "bg-[#FFF1B8] text-[#071242] shadow-lg transform scale-105 font-bold"
+                        : "bg-[#1C2769] text-white hover:bg-[#27348B]"
                         }`}
                     >
                       <span className="text-xs font-medium uppercase">{dayName}</span>
