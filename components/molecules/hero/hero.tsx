@@ -54,9 +54,7 @@ export const Hero = () => {
                 {dictionary.hero.dates}
               </p>
 
-              <div className="mt-6">
-                <CountdownTimer targetDate="2025-06-14" />
-              </div>
+
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
