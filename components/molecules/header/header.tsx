@@ -25,13 +25,15 @@ export const Header = () => {
 
   return (
     <header className="container mx-auto py-2 flex justify-between items-center relative z-20">
-      <Image
-        src="/images/logo.svg"
-        alt="Prefeitura de Arcoverde"
-        width={80}
-        height={80}
-        className="object-contain"
-      />
+      <Link href={`/${params.lang}`}>
+        <Image
+          src="/images/logo.svg"
+          alt="Prefeitura de Arcoverde"
+          width={80}
+          height={80}
+          className="object-contain"
+        />
+      </Link>
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-6">
         <a href={`/${params.lang}`} className="hover:text-yellow-400 transition-colors">

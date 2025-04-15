@@ -2,10 +2,7 @@ import type React from "react"
 import { Farro, Flavors } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 
-
-
 import "./globals.css"
-import Head from "next/head"
 
 
 const farro = Farro({

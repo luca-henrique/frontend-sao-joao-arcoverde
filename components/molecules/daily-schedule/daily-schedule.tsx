@@ -8,122 +8,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import { useDictionary } from "@/hooks/use-dictionary"
 import { useParams } from "next/navigation"
+import { mainStage } from "@/constants/main-stage"
 
-type FestivalDay = {
-  id: number
-  date: string
-  dayName: string
-  dayNumber: string
-  month: string
-  image: string
-  artists: string[]
-  schedule: {
-    time: string
-    artist: string
-    stage: string
-  }[]
-}
-
-const festivalDays: FestivalDay[] = [
-  {
-    id: 1,
-    date: "14.JUN",
-    dayName: "SÁB",
-    dayNumber: "14",
-    month: "JUN",
-    image: "/images/festival/day-14.png",
-    artists: ["DESEJO DE MENINA", "GERALDO AZEVEDO", "PRISCILA SENNA"],
-    schedule: [
-      { time: "19:00", artist: "GERALDO AZEVEDO", stage: "Palco Principal" },
-      { time: "21:30", artist: "PRISCILA SENNA", stage: "Palco Principal" },
-      { time: "23:45", artist: "DESEJO DE MENINA", stage: "Palco Principal" },
-    ],
-  },
-  {
-    id: 2,
-    date: "15.JUN",
-    dayName: "DOM",
-    dayNumber: "15",
-    month: "JUN",
-    image: "/images/festival/day-15.png",
-    artists: ["CIRO SANTOS", "DORGIVAL DANTAS", "FLÁVIO JOSÉ"],
-    schedule: [
-      { time: "19:00", artist: "FLÁVIO JOSÉ", stage: "Palco Principal" },
-      { time: "21:30", artist: "DORGIVAL DANTAS", stage: "Palco Principal" },
-      { time: "23:45", artist: "CIRO SANTOS", stage: "Palco Principal" },
-    ],
-  },
-  {
-    id: 3,
-    date: "16.JUN",
-    dayName: "SEG",
-    dayNumber: "16",
-    month: "JUN",
-    image: "/images/festival/day-16.png",
-    artists: ["FESTIVAL DAS QUADRILHAS JUNINAS"],
-    schedule: [
-      { time: "19:00", artist: "QUADRILHA MATUTA", stage: "Arena das Quadrilhas" },
-      { time: "20:30", artist: "QUADRILHA JUNINA ARRETADA", stage: "Arena das Quadrilhas" },
-      { time: "22:00", artist: "QUADRILHA TRADIÇÃO", stage: "Arena das Quadrilhas" },
-    ],
-  },
-  {
-    id: 4,
-    date: "17.JUN",
-    dayName: "TER",
-    dayNumber: "17",
-    month: "JUN",
-    image: "/images/festival/day-17.png",
-    artists: ["JOÃO VAQUEIRO", "LÉO FOGUETE", "JONAS ESTICADO"],
-    schedule: [
-      { time: "19:00", artist: "LÉO FOGUETE", stage: "Palco Principal" },
-      { time: "21:30", artist: "JONAS ESTICADO", stage: "Palco Principal" },
-      { time: "23:45", artist: "JOÃO VAQUEIRO", stage: "Palco Principal" },
-    ],
-  },
-  {
-    id: 5,
-    date: "18.JUN",
-    dayName: "QUA",
-    dayNumber: "18",
-    month: "JUN",
-    image: "/images/festival/day-18.png",
-    artists: ["FORROZÃO CHACAL", "XAND AVIÃO", "PABLO"],
-    schedule: [
-      { time: "19:00", artist: "FORROZÃO CHACAL", stage: "Palco Principal" },
-      { time: "21:30", artist: "XAND AVIÃO", stage: "Palco Principal" },
-      { time: "23:45", artist: "PABLO", stage: "Palco Principal" },
-    ],
-  },
-  {
-    id: 6,
-    date: "19.JUN",
-    dayName: "QUI",
-    dayNumber: "19",
-    month: "JUN",
-    image: "/images/festival/day-19.png",
-    artists: ["BIA VILLA-CHAN", "ZÉ VAQUEIRO", "MANIM VAQUEIRO"],
-    schedule: [
-      { time: "19:00", artist: "BIA VILLA-CHAN", stage: "Palco Principal" },
-      { time: "21:30", artist: "ZÉ VAQUEIRO", stage: "Palco Principal" },
-      { time: "23:45", artist: "MANIM VAQUEIRO", stage: "Palco Principal" },
-    ],
-  },
-  {
-    id: 7,
-    date: "20.JUN",
-    dayName: "SEX",
-    dayNumber: "20",
-    month: "JUN",
-    image: "/images/festival/day-20.png",
-    artists: ["YCARO E VITÓRIO", "REY VAQUEIRO", "BRASAS DO FORRÓ"],
-    schedule: [
-      { time: "19:00", artist: "YCARO E VITÓRIO", stage: "Palco Principal" },
-      { time: "21:30", artist: "REY VAQUEIRO", stage: "Palco Principal" },
-      { time: "23:45", artist: "BRASAS DO FORRÓ", stage: "Palco Principal" },
-    ],
-  },
-]
 
 export default function DailySchedule() {
   const [expandedDay, setExpandedDay] = useState<number | null>(null)
@@ -151,7 +37,7 @@ export default function DailySchedule() {
         </div>
 
         <div className="space-y-4 max-w-4xl mx-auto">
-          {festivalDays.map((day) => (
+          {mainStage.map((day) => (
             <div key={day.id} className="bg-[#0c1d52] rounded-lg overflow-hidden border border-blue-800">
               <div className="p-4 flex items-center justify-between cursor-pointer" onClick={() => toggleDay(day.id)}>
                 <div className="flex items-center gap-4">
@@ -191,7 +77,7 @@ export default function DailySchedule() {
                         <div className="md:w-1/3">
                           <div className="relative w-full aspect-[9/16] rounded-lg overflow-hidden">
                             <Image
-                              src={day.image || "/placeholder.svg"}
+                              src={day.image}
                               alt={`São João de Arcoverde - ${day.date}`}
                               fill
                               className="object-cover"
@@ -218,7 +104,9 @@ export default function DailySchedule() {
                           </div>
                           <div className="mt-6 flex justify-end">
                             <Button className="bg-[#F9A61A] hover:bg-[#F2960F] text-[#071242] font-bold">
-                              Ver Detalhes
+                              <Link href={`/${lang}/programacao`}>
+                                {dictionary.schedule.viewAllBtn}
+                              </Link>
                             </Button>
                           </div>
                         </div>
