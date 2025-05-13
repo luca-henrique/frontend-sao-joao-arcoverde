@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Footer } from "@/components/molecules/footer/footer"
 import { useMemo, useState } from "react"
 import { useDebounce } from "@/hooks/use-debounce"
+import { allStages } from "@/constants/all-stages"
 
 
 export default function ProgramacaoPage() {
@@ -18,14 +19,14 @@ export default function ProgramacaoPage() {
   const [selectedDay, setSelectedDay] = useState("all");
   const [selectedPole, setSelectedPole] = useState("all");
 
-  const allDays = new Set(scheduleData.map(day => day.date));
-  const allPoles = new Set(scheduleData.flatMap(day => day.attractions.map(attraction => attraction.pole)));
+  const allDays = new Set(allStages.map(day => day.date));
+  const allPoles = new Set(allStages.flatMap(day => day.attractions.map(attraction => attraction.pole)));
 
   const debouneArtist = useDebounce(selectedArtist, 2400);
 
 
 
-  const filteredSchedule = useMemo(() => scheduleData
+  const filteredSchedule = useMemo(() => allStages
     .filter((day) => selectedDay === "all" || day.date === selectedDay)
     .map((day) => ({
       ...day,
@@ -158,7 +159,7 @@ export default function ProgramacaoPage() {
 
           <TabsContent value="list" className="mt-0">
             <div className="space-y-6">
-              {scheduleData.map((day) => (
+              {allStages.map((day) => (
                 <div key={day.date} className="bg-[#0c1d52] rounded-lg border border-blue-800 overflow-hidden">
                   <div className={`bg-${day.color}-900 p-4 flex justify-between items-center`}>
                     <div className="flex items-center gap-2">
@@ -232,69 +233,4 @@ export default function ProgramacaoPage() {
   )
 }
 
-const scheduleData = [
-  {
-    dayName: "SÁB",
-    date: "14.JUN",
-    color: "blue",
-    attractions: [
-      { name: "GERALDO AZEVEDO", artist: "", time: "20:00", pole: "Principal" },
-      { name: "PRISCILA SENNA", artist: "", time: "22:30", pole: "Principal" },
-      { name: "DESEJO DE MENINA", artist: "", time: "00:30", pole: "Principal" },
-      { name: "TRIO PÉ DE SERRA", artist: "", time: "15:00", pole: "Polo do Cruzeiro" },
-      { name: "FORRÓ RAIZ", artist: "", time: "17:30", pole: "Polo do Cruzeiro" },
-      { name: "POETAS POPULARES", artist: "", time: "16:00", pole: "Polo da Poesia" },
-      { name: "CORAL MUNICIPAL", artist: "", time: "15:00", pole: "Polo Gospel" },
-    ],
-  },
-  {
-    dayName: "DOM",
-    date: "15.JUN",
-    color: "green",
-    attractions: [
-      { name: "FLÁVIO JOSÉ", artist: "", time: "20:00", pole: "Principal" },
-      { name: "DORGIVAL DANTAS", artist: "", time: "22:30", pole: "Principal" },
-      { name: "CIRO SANTOS", artist: "", time: "00:30", pole: "Principal" },
-      { name: "ZABUMBA NOSSA SENHORA", artist: "", time: "15:00", pole: "Polo Cultural" },
-      { name: "BANDA REGIONAL", artist: "", time: "17:00", pole: "Polo Cultural" },
-      { name: "FESTIVAL DE COMIDAS TÍPICAS", artist: "", time: "16:00", pole: "Polo Gastronômico" },
-    ],
-  },
-  {
-    dayName: "SEG",
-    date: "16.JUN",
-    color: "yellow",
-    attractions: [
-      { name: "FESTIVAL DAS", artist: "QUADRILHAS", time: "19:00", pole: "Principal" },
-      { name: "JUNINAS", artist: "", time: "20:00", pole: "Principal" },
-      { name: "QUADRILHA MATUTA", artist: "", time: "15:00", pole: "Polo das Quadrilhas" },
-      { name: "QUADRILHA JUNINA ARRETADA", artist: "", time: "16:30", pole: "Polo das Quadrilhas" },
-      { name: "QUADRILHA TRADIÇÃO", artist: "", time: "18:00", pole: "Polo das Quadrilhas" },
-    ],
-  },
-  {
-    dayName: "TER",
-    date: "17.JUN",
-    color: "red",
-    attractions: [
-      { name: "LEO FOGUETE", artist: "", time: "20:00", pole: "Principal" },
-      { name: "JONAS ESTICADO", artist: "", time: "22:30", pole: "Principal" },
-      { name: "JOÃO VAQUEIRO", artist: "", time: "00:30", pole: "Principal" },
-      { name: "CANTORES GOSPEL", artist: "", time: "16:00", pole: "Polo Gospel" },
-      { name: "SARAU DE POESIA", artist: "", time: "17:00", pole: "Polo da Poesia" },
-    ],
-  },
-  {
-    dayName: "QUA",
-    date: "18.JUN",
-    color: "purple",
-    attractions: [
-      { name: "XAND AVIÃO", artist: "", time: "20:00", pole: "Principal" },
-      { name: "PABLO", artist: "", time: "22:30", pole: "Principal" },
-      { name: "FORROZÃO CHACAL", artist: "", time: "00:30", pole: "Principal" },
-      { name: "FEIRA DE ARTESANATO", artist: "", time: "15:00", pole: "Polo Cultural" },
-      { name: "TRIO PÉ DE SERRA", artist: "", time: "16:00", pole: "Polo do Cruzeiro" },
-    ],
-  },
-]
 
