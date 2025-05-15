@@ -2,8 +2,9 @@ import type React from "react"
 import { Farro, Flavors } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 
-import "./globals.css"
+import { DictionaryProvider } from "@/providers/language"
 
+import "./globals.css"
 
 const farro = Farro({
   weight: ["300", "400", "500", "700",],
@@ -18,7 +19,7 @@ const flavors = Flavors({
 export const metadata = {
   title: "São João de Arcoverde 2025",
   description: "O melhor São João do interior de Pernambuco",
-  generator: 'Lucas Paes'
+  author: 'Lucas Paes'
 }
 
 export default function RootLayout({
@@ -28,10 +29,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-
       <body className={`${farro.className} ${flavors.className} `}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          {children}
+          <DictionaryProvider>
+            {children}
+          </DictionaryProvider>
         </ThemeProvider>
       </body>
     </html>

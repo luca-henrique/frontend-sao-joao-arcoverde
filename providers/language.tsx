@@ -3,19 +3,18 @@
 import { createContext, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { getDictionary } from '@/i18n';
+import { IDictionary } from '@/types/dictionary';
 
-export interface Dictionary {
-  [key: string]: string;
-}
 
-export const DictionaryContext = createContext<Dictionary | null>(null);
+
+export const DictionaryContext = createContext<IDictionary | null>(null);
 
 export interface DictionaryProps {
   children: React.ReactNode
 }
 
 export const DictionaryProvider = ({ children }: DictionaryProps) => {
-  const [dictionary, setDictionary] = useState<Record<string, any> | null>(null);
+  const [dictionary, setDictionary] = useState<IDictionary | null>(null);
   const params = useParams();
 
   useEffect(() => {
