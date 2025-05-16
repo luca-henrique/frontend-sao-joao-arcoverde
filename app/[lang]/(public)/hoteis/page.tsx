@@ -5,17 +5,56 @@ import type React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Calendar, ChevronLeft, MapPin, Phone, Star, Wifi, Coffee, Car, Bath } from "lucide-react"
+import {
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  MapPin,
+  Phone,
+  Star,
+  Wifi,
+  Coffee,
+  Car,
+  Bath,
+  Users,
+  Home,
+  Bed,
+  Heart,
+  Share,
+  Award,
+  Utensils,
+  Tv,
+  Wind,
+  Snowflake,
+  ChevronUp,
+} from "lucide-react"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { cn } from "@/lib/utils"
 
-// Define types for our hotel data
+// Define types for our property data
 type Amenity = {
   name: string
   icon: React.ReactNode
 }
 
-type Hotel = {
+type Review = {
+  id: string
+  author: string
+  rating: number
+  comment: string
+  date: string
+  avatar?: string
+}
+
+type PropertyImage = {
+  url: string
+  alt: string
+}
+
+type Property = {
   id: string
   name: string
   description: string
@@ -23,13 +62,97 @@ type Hotel = {
   phone: string
   priceRange: string
   rating: number
-  image: string
+  images: PropertyImage[]
   amenities: Amenity[]
   distanceToEvent: string
   website?: string
+  type: "hotel" | "pousada" | "casa" | "apartamento"
+  rooms?: number
+  bathrooms?: number
+  capacity?: number
+  host?: {
+    name: string
+    rating: number
+    responseRate: string
+    avatar?: string
+  }
+  reviews?: Review[]
+  featured?: boolean
 }
 
 export default function HoteisPage() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [activePropertyId, setActivePropertyId] = useState<string | null>(null)
+  const [activeImageIndex, setActiveImageIndex] = useState<Record<string, number>>({})
+  const [selectedTab, setSelectedTab] = useState("todos")
+  const [showFavorites, setShowFavorites] = useState(false)
+  const [favorites, setFavorites] = useState<string[]>([])
+
+  // Load favorites from localStorage on component mount
+  useEffect(() => {
+    const savedFavorites = localStorage.getItem("propertyFavorites")
+    if (savedFavorites) {
+      setFavorites(JSON.parse(savedFavorites))
+    }
+  }, [])
+
+  // Save favorites to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem("propertyFavorites", JSON.stringify(favorites))
+  }, [favorites])
+
+  const toggleFavorite = (id: string) => {
+    setFavorites((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((item) => item !== id)
+      } else {
+        return [...prev, id]
+      }
+    })
+  }
+
+  const polos = [
+    { name: "Polo do Cruzeiro", slug: "cruzeiro" },
+    { name: "Polo da Poesia", slug: "poesia" },
+    { name: "Polo Gospel", slug: "gospel" },
+    { name: "Polo das Quadrilhas", slug: "quadrilhas" },
+    { name: "Polo Gastronômico", slug: "gastronomico" },
+    { name: "Polo Cultural", slug: "cultural" },
+  ]
+
+  // Function to navigate through property images
+  const navigateImages = (propertyId: string, direction: "next" | "prev") => {
+    const property = properties.find((p) => p.id === propertyId)
+    if (!property) return
+
+    const currentIndex = activeImageIndex[propertyId] || 0
+    const totalImages = property.images.length
+
+    let newIndex
+    if (direction === "next") {
+      newIndex = (currentIndex + 1) % totalImages
+    } else {
+      newIndex = (currentIndex - 1 + totalImages) % totalImages
+    }
+
+    setActiveImageIndex((prev) => ({
+      ...prev,
+      [propertyId]: newIndex,
+    }))
+  }
+
+  // Filter properties based on selected tab and favorites
+  const filteredProperties = properties.filter((property) => {
+    if (showFavorites) {
+      return favorites.includes(property.id)
+    }
+
+    if (selectedTab === "todos") {
+      return true
+    }
+    return property.type === selectedTab
+  })
 
   return (
     <div className="min-h-screen bg-[#0a1744] text-white">
@@ -43,7 +166,7 @@ export default function HoteisPage() {
                 Voltar
               </Link>
               <span className="text-gray-400 mx-2">/</span>
-              <h1 className="text-3xl md:text-4xl font-bold">Hotéis e Hospedagem</h1>
+              <h1 className="text-3xl md:text-4xl font-bold">Hospedagem em Arcoverde</h1>
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="text-yellow-400" />
@@ -59,71 +182,434 @@ export default function HoteisPage() {
           <div className="flex flex-col md:flex-row gap-4 justify-between">
             <h2 className="text-xl font-bold">Encontre sua hospedagem ideal para o São João</h2>
             <div className="flex flex-wrap gap-2">
-              <Tabs defaultValue="todos" className="w-full">
+              <Tabs defaultValue="todos" className="w-full" value={selectedTab} onValueChange={setSelectedTab}>
                 <TabsList className="bg-[#081235] p-1">
                   <TabsTrigger value="todos" className="data-[state=active]:bg-blue-700">
                     Todos
                   </TabsTrigger>
-                  <TabsTrigger value="hoteis" className="data-[state=active]:bg-blue-700">
-                    Hotéis
+                  <TabsTrigger value="hotel" className="data-[state=active]:bg-blue-700">
+                    Hospedagem
                   </TabsTrigger>
-                  <TabsTrigger value="pousadas" className="data-[state=active]:bg-blue-700">
+                  <TabsTrigger value="pousada" className="data-[state=active]:bg-blue-700">
                     Pousadas
+                  </TabsTrigger>
+                  <TabsTrigger value="casa" className="data-[state=active]:bg-blue-700">
+                    Casas
+                  </TabsTrigger>
+                  <TabsTrigger value="apartamento" className="data-[state=active]:bg-blue-700">
+                    Apartamentos
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
           </div>
+          <div className="mt-4 flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowFavorites(!showFavorites)}
+                className={cn("border-blue-500 text-white hover:bg-blue-800", showFavorites && "bg-blue-700")}
+              >
+                <Heart className={cn("w-4 h-4 mr-2", showFavorites && "fill-red-500 text-red-500")} />
+                Favoritos ({favorites.length})
+              </Button>
+            </div>
+            <div className="text-sm text-gray-300">{filteredProperties.length} opções encontradas</div>
+          </div>
         </div>
       </div>
 
-      {/* Hotels List */}
+      {/* Properties List */}
       <div className="container mx-auto pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {hotels.map((hotel) => (
+          {filteredProperties.map((property) => (
             <div
-              key={hotel.id}
+              key={property.id}
               className="bg-[#0c1d52] rounded-lg overflow-hidden border border-blue-800 flex flex-col"
             >
-              <div className="relative h-48">
-                <Image src={hotel.image || "/placeholder.svg"} alt={hotel.name} fill className="object-cover" />
-                <div className="absolute top-2 right-2 bg-yellow-500 text-black font-bold px-2 py-1 rounded-md text-sm">
-                  {hotel.priceRange}
+              <div className="relative h-64">
+                {/* Image carousel */}
+                <div className="relative w-full h-full">
+                  <Image
+                    src={property.images[activeImageIndex[property.id] || 0].url || "/placeholder.svg"}
+                    alt={property.images[activeImageIndex[property.id] || 0].alt}
+                    fill
+                    className="object-cover transition-opacity duration-300"
+                  />
+
+                  {/* Navigation arrows */}
+                  {property.images.length > 1 && (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault()
+                          navigateImages(property.id, "prev")
+                        }}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 rounded-full p-1 hover:bg-black/70 transition-colors"
+                        aria-label="Imagem anterior"
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault()
+                          navigateImages(property.id, "next")
+                        }}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 rounded-full p-1 hover:bg-black/70 transition-colors"
+                        aria-label="Próxima imagem"
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                    </>
+                  )}
+
+                  {/* Image counter */}
+                  {property.images.length > 1 && (
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-black/60 rounded-full px-2 py-1 text-xs">
+                      {(activeImageIndex[property.id] || 0) + 1} / {property.images.length}
+                    </div>
+                  )}
                 </div>
+
+                {/* Price tag */}
+                <div className="absolute top-2 right-2 bg-yellow-500 text-black font-bold px-2 py-1 rounded-md text-sm">
+                  {property.priceRange}
+                </div>
+
+                {/* Property type badge */}
+                <div className="absolute top-2 left-2">
+                  <Badge className="bg-blue-600 hover:bg-blue-700">
+                    {property.type === "hotel" && "Hotel"}
+                    {property.type === "pousada" && "Pousada"}
+                    {property.type === "casa" && "Casa"}
+                    {property.type === "apartamento" && "Apartamento"}
+                  </Badge>
+                </div>
+
+                {/* Favorite button */}
+                <button
+                  onClick={() => toggleFavorite(property.id)}
+                  className="absolute bottom-2 right-2 bg-black/50 rounded-full p-2 hover:bg-black/70 transition-colors"
+                  aria-label={favorites.includes(property.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+                >
+                  <Heart
+                    className={cn(
+                      "w-5 h-5",
+                      favorites.includes(property.id) ? "fill-red-500 text-red-500" : "text-white",
+                    )}
+                  />
+                </button>
               </div>
+
               <div className="p-4 flex-grow">
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-xl font-bold">{hotel.name}</h3>
+                  <h3 className="text-xl font-bold">{property.name}</h3>
                   <div className="flex items-center">
                     <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                    <span className="ml-1">{hotel.rating}</span>
+                    <span className="ml-1">{property.rating}</span>
                   </div>
                 </div>
-                <p className="text-gray-300 mb-4 text-sm">{hotel.description}</p>
+
+                {/* Property type and capacity */}
+                <div className="flex items-center gap-4 mb-3 text-sm text-gray-300">
+                  {property.type === "casa" || property.type === "apartamento" ? (
+                    <>
+                      {property.rooms && (
+                        <div className="flex items-center gap-1">
+                          <Bed className="w-4 h-4" />
+                          <span>
+                            {property.rooms} {property.rooms === 1 ? "quarto" : "quartos"}
+                          </span>
+                        </div>
+                      )}
+                      {property.bathrooms && (
+                        <div className="flex items-center gap-1">
+                          <Bath className="w-4 h-4" />
+                          <span>
+                            {property.bathrooms} {property.bathrooms === 1 ? "banheiro" : "banheiros"}
+                          </span>
+                        </div>
+                      )}
+                      {property.capacity && (
+                        <div className="flex items-center gap-1">
+                          <Users className="w-4 h-4" />
+                          <span>
+                            {property.capacity} {property.capacity === 1 ? "hóspede" : "hóspedes"}
+                          </span>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div className="flex items-center gap-1">
+                      <Home className="w-4 h-4" />
+                      <span>{property.type === "hotel" ? "Hotel" : "Pousada"}</span>
+                    </div>
+                  )}
+                </div>
+
+                <p className="text-gray-300 mb-4 text-sm line-clamp-2">{property.description}</p>
+
                 <div className="flex items-start gap-2 mb-2">
                   <MapPin className="text-red-500 mt-1 flex-shrink-0 w-4 h-4" />
-                  <p className="text-sm text-gray-300">{hotel.address}</p>
+                  <p className="text-sm text-gray-300">{property.address}</p>
                 </div>
+
                 <div className="flex items-center gap-2 mb-4">
                   <Car className="text-blue-400 w-4 h-4" />
-                  <p className="text-sm text-gray-300">{hotel.distanceToEvent}</p>
+                  <p className="text-sm text-gray-300">{property.distanceToEvent}</p>
                 </div>
+
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {hotel.amenities.map((amenity, index) => (
+                  {property.amenities.slice(0, 4).map((amenity, index) => (
                     <div key={index} className="flex items-center bg-[#081235] px-2 py-1 rounded-md text-xs">
                       {amenity.icon}
                       <span className="ml-1">{amenity.name}</span>
                     </div>
                   ))}
+                  {property.amenities.length > 4 && (
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="bg-[#081235] px-2 py-1 rounded-md text-xs hover:bg-[#0a1744]">
+                          +{property.amenities.length - 4} mais
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className="bg-[#0c1d52] text-white border-blue-800">
+                        <h3 className="text-lg font-bold mb-4">Comodidades de {property.name}</h3>
+                        <div className="grid grid-cols-2 gap-3">
+                          {property.amenities.map((amenity, index) => (
+                            <div key={index} className="flex items-center gap-2">
+                              {amenity.icon}
+                              <span>{amenity.name}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  )}
                 </div>
+
+                {/* Host information for houses and apartments */}
+                {(property.type === "casa" || property.type === "apartamento") && property.host && (
+                  <div className="border-t border-blue-800 pt-3 mt-3">
+                    <div className="flex items-center gap-2">
+                      <div className="relative w-8 h-8 rounded-full overflow-hidden">
+                        <Image
+                          src={property.host.avatar || "/placeholder.svg?height=50&width=50"}
+                          alt={`Anfitrião ${property.host.name}`}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">Anfitrião: {property.host.name}</p>
+                        <div className="flex items-center text-xs text-gray-300">
+                          <Star className="w-3 h-3 text-yellow-400 fill-yellow-400 mr-1" />
+                          <span>
+                            {property.host.rating} • Responde em {property.host.responseRate}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
+
               <div className="p-4 border-t border-blue-800 bg-[#081235]">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Phone className="w-4 h-4 text-green-500" />
-                    <span className="text-sm">{hotel.phone}</span>
+                    <span className="text-sm">{property.phone}</span>
                   </div>
-                  <Button className="bg-red-600 hover:bg-red-700 text-white">Reservar</Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button className="bg-red-600 hover:bg-red-700 text-white">Ver detalhes</Button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-[#0c1d52] text-white border-blue-800 max-w-3xl">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Image carousel */}
+                        <div className="relative h-64 md:h-full rounded-lg overflow-hidden">
+                          <Image
+                            src={property.images[activeImageIndex[property.id] || 0].url}
+                            alt={property.images[activeImageIndex[property.id] || 0].alt}
+                            fill
+                            className="object-cover"
+                          />
+
+                          {/* Navigation arrows */}
+                          {property.images.length > 1 && (
+                            <>
+                              <button
+                                onClick={() => navigateImages(property.id, "prev")}
+                                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 rounded-full p-1 hover:bg-black/70 transition-colors"
+                                aria-label="Imagem anterior"
+                              >
+                                <ChevronLeft className="w-5 h-5" />
+                              </button>
+                              <button
+                                onClick={() => navigateImages(property.id, "next")}
+                                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 rounded-full p-1 hover:bg-black/70 transition-colors"
+                                aria-label="Próxima imagem"
+                              >
+                                <ChevronRight className="w-5 h-5" />
+                              </button>
+                            </>
+                          )}
+
+                          {/* Image counter */}
+                          {property.images.length > 1 && (
+                            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-black/60 rounded-full px-2 py-1 text-xs">
+                              {(activeImageIndex[property.id] || 0) + 1} / {property.images.length}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Property details */}
+                        <div>
+                          <div className="flex justify-between items-start mb-4">
+                            <h2 className="text-2xl font-bold">{property.name}</h2>
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => toggleFavorite(property.id)}
+                                className="bg-[#081235] p-2 rounded-full hover:bg-[#0a1744]"
+                                aria-label={
+                                  favorites.includes(property.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"
+                                }
+                              >
+                                <Heart
+                                  className={cn(
+                                    "w-5 h-5",
+                                    favorites.includes(property.id) ? "fill-red-500 text-red-500" : "text-white",
+                                  )}
+                                />
+                              </button>
+                              <button
+                                className="bg-[#081235] p-2 rounded-full hover:bg-[#0a1744]"
+                                aria-label="Compartilhar"
+                              >
+                                <Share className="w-5 h-5" />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2 mb-4">
+                            <Badge className="bg-blue-600">
+                              {property.type === "hotel" && "Hotel"}
+                              {property.type === "pousada" && "Pousada"}
+                              {property.type === "casa" && "Casa"}
+                              {property.type === "apartamento" && "Apartamento"}
+                            </Badge>
+                            <div className="flex items-center">
+                              <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                              <span className="ml-1">{property.rating}</span>
+                            </div>
+                            {property.featured && (
+                              <Badge className="bg-yellow-600">
+                                <Award className="w-3 h-3 mr-1" /> Destaque
+                              </Badge>
+                            )}
+                          </div>
+
+                          <div className="mb-4">
+                            <p className="text-gray-300">{property.description}</p>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-3 mb-4">
+                            <div className="flex items-start gap-2">
+                              <MapPin className="text-red-500 mt-1 flex-shrink-0 w-4 h-4" />
+                              <p className="text-sm text-gray-300">{property.address}</p>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <Car className="text-blue-400 w-4 h-4" />
+                              <p className="text-sm text-gray-300">{property.distanceToEvent}</p>
+                            </div>
+
+                            {property.type === "casa" || property.type === "apartamento" ? (
+                              <>
+                                {property.rooms && (
+                                  <div className="flex items-center gap-2">
+                                    <Bed className="w-4 h-4" />
+                                    <span className="text-sm">
+                                      {property.rooms} {property.rooms === 1 ? "quarto" : "quartos"}
+                                    </span>
+                                  </div>
+                                )}
+                                {property.bathrooms && (
+                                  <div className="flex items-center gap-2">
+                                    <Bath className="w-4 h-4" />
+                                    <span className="text-sm">
+                                      {property.bathrooms} {property.bathrooms === 1 ? "banheiro" : "banheiros"}
+                                    </span>
+                                  </div>
+                                )}
+                                {property.capacity && (
+                                  <div className="flex items-center gap-2">
+                                    <Users className="w-4 h-4" />
+                                    <span className="text-sm">
+                                      {property.capacity} {property.capacity === 1 ? "hóspede" : "hóspedes"}
+                                    </span>
+                                  </div>
+                                )}
+                              </>
+                            ) : null}
+
+                            <div className="flex items-center gap-2">
+                              <Phone className="w-4 h-4 text-green-500" />
+                              <span className="text-sm">{property.phone}</span>
+                            </div>
+                          </div>
+
+                          <div className="mb-4">
+                            <h3 className="font-bold mb-2">Comodidades</h3>
+                            <div className="grid grid-cols-2 gap-2">
+                              {property.amenities.slice(0, 6).map((amenity, index) => (
+                                <div key={index} className="flex items-center gap-2 text-sm">
+                                  {amenity.icon}
+                                  <span>{amenity.name}</span>
+                                </div>
+                              ))}
+                            </div>
+                            {property.amenities.length > 6 && (
+                              <button className="text-blue-400 text-sm mt-2 hover:underline">
+                                Ver todas as {property.amenities.length} comodidades
+                              </button>
+                            )}
+                          </div>
+
+                          {/* Host information for houses and apartments */}
+                          {(property.type === "casa" || property.type === "apartamento") && property.host && (
+                            <div className="border-t border-blue-800 pt-4 mt-4">
+                              <h3 className="font-bold mb-2">Sobre o anfitrião</h3>
+                              <div className="flex items-center gap-3">
+                                <div className="relative w-12 h-12 rounded-full overflow-hidden">
+                                  <Image
+                                    src={property.host.avatar || "/placeholder.svg?height=50&width=50"}
+                                    alt={`Anfitrião ${property.host.name}`}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                </div>
+                                <div>
+                                  <p className="font-medium">{property.host.name}</p>
+                                  <div className="flex items-center text-sm text-gray-300">
+                                    <Star className="w-4 h-4 text-yellow-400 fill-yellow-400 mr-1" />
+                                    <span>
+                                      {property.host.rating} • Responde em {property.host.responseRate}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          <div className="mt-6">
+                            <Button className="w-full bg-red-600 hover:bg-red-700 text-white">Reservar agora</Button>
+                          </div>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </div>
             </div>
@@ -135,8 +621,8 @@ export default function HoteisPage() {
       <section className="py-16 bg-[#0c1d52]">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold text-center mb-8">
-            <span className="text-white">Localização dos</span>
-            <span className="block text-yellow-400">Hotéis</span>
+            <span className="text-white">Localização das</span>
+            <span className="block text-yellow-400">Hospedagens</span>
           </h2>
 
           <div className="rounded-lg overflow-hidden shadow-lg h-[400px] md:h-[500px]">
@@ -148,7 +634,7 @@ export default function HoteisPage() {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Mapa dos hotéis"
+              title="Mapa das hospedagens"
               className="w-full h-full"
             ></iframe>
           </div>
@@ -160,8 +646,8 @@ export default function HoteisPage() {
         <div className="container mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6">Garanta sua hospedagem com antecedência!</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Os hotéis e pousadas de Arcoverde ficam lotados durante o período do São João. Faça sua reserva o quanto
-            antes para garantir o melhor preço e disponibilidade.
+            Os hotéis, pousadas e casas de Arcoverde ficam lotados durante o período do São João. Faça sua reserva o
+            quanto antes para garantir o melhor preço e disponibilidade.
           </p>
           <Button className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold text-lg py-6 px-8">
             Ver todas as opções
@@ -228,39 +714,55 @@ export default function HoteisPage() {
   )
 }
 
-// Sample hotel data
-const hotels: Hotel[] = [
+// Sample property data with expanded information
+const properties: Property[] = [
   {
     id: "hotel-1",
     name: "Hotel São João Palace",
     description:
-      "Hotel 4 estrelas com excelente localização, próximo ao Parque de Eventos. Oferece café da manhã incluso, piscina e estacionamento gratuito.",
+      "Hotel 4 estrelas com excelente localização, próximo ao Parque de Eventos. Oferece café da manhã incluso, piscina e estacionamento gratuito. Quartos espaçosos com ar-condicionado e TV a cabo.",
     address: "Av. Dom Pedro II, 850, Centro, Arcoverde",
     phone: "(87) 3821-5678",
     priceRange: "R$ 250 - R$ 450",
     rating: 4.7,
-    image: "/placeholder.svg?height=400&width=600",
+    type: "hotel",
+    images: [
+      { url: "/placeholder.svg?height=400&width=600", alt: "Fachada do Hotel São João Palace" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Lobby do Hotel São João Palace" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Quarto do Hotel São João Palace" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Piscina do Hotel São João Palace" },
+    ],
     amenities: [
       { name: "Wi-Fi", icon: <Wifi className="w-3 h-3" /> },
       { name: "Café da manhã", icon: <Coffee className="w-3 h-3" /> },
       { name: "Estacionamento", icon: <Car className="w-3 h-3" /> },
       { name: "Piscina", icon: <Bath className="w-3 h-3" /> },
+      { name: "Ar-condicionado", icon: <Snowflake className="w-3 h-3" /> },
+      { name: "Restaurante", icon: <Utensils className="w-3 h-3" /> },
+      { name: "TV a cabo", icon: <Tv className="w-3 h-3" /> },
     ],
     distanceToEvent: "500m do Parque de Eventos",
+    featured: true,
   },
   {
     id: "hotel-2",
     name: "Pousada Forró e Tradição",
     description:
-      "Pousada aconchegante com decoração típica nordestina. Quartos confortáveis e ambiente familiar, ideal para quem busca tranquilidade.",
+      "Pousada aconchegante com decoração típica nordestina. Quartos confortáveis e ambiente familiar, ideal para quem busca tranquilidade. Café da manhã regional com tapioca e cuscuz.",
     address: "Rua das Flores, 123, Bairro São Cristóvão, Arcoverde",
     phone: "(87) 3821-4321",
     priceRange: "R$ 150 - R$ 250",
     rating: 4.5,
-    image: "/placeholder.svg?height=400&width=600",
+    type: "pousada",
+    images: [
+      { url: "/placeholder.svg?height=400&width=600", alt: "Entrada da Pousada Forró e Tradição" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Quarto da Pousada Forró e Tradição" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Área comum da Pousada Forró e Tradição" },
+    ],
     amenities: [
       { name: "Wi-Fi", icon: <Wifi className="w-3 h-3" /> },
       { name: "Café da manhã", icon: <Coffee className="w-3 h-3" /> },
+      { name: "Ar-condicionado", icon: <Snowflake className="w-3 h-3" /> },
     ],
     distanceToEvent: "1,2km do Parque de Eventos",
   },
@@ -268,69 +770,252 @@ const hotels: Hotel[] = [
     id: "hotel-3",
     name: "Hotel Central Arcoverde",
     description:
-      "Hotel moderno no centro da cidade, com fácil acesso a restaurantes e comércio. Oferece serviço de quarto 24h e academia.",
+      "Hotel moderno no centro da cidade, com fácil acesso a restaurantes e comércio. Oferece serviço de quarto 24h e academia. Ideal para viajantes a negócios e turistas.",
     address: "Av. Principal, 500, Centro, Arcoverde",
     phone: "(87) 3821-7890",
     priceRange: "R$ 200 - R$ 350",
     rating: 4.3,
-    image: "/placeholder.svg?height=400&width=600",
+    type: "hotel",
+    images: [
+      { url: "/placeholder.svg?height=400&width=600", alt: "Fachada do Hotel Central Arcoverde" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Recepção do Hotel Central Arcoverde" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Quarto do Hotel Central Arcoverde" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Academia do Hotel Central Arcoverde" },
+    ],
     amenities: [
       { name: "Wi-Fi", icon: <Wifi className="w-3 h-3" /> },
       { name: "Café da manhã", icon: <Coffee className="w-3 h-3" /> },
       { name: "Estacionamento", icon: <Car className="w-3 h-3" /> },
+      { name: "Academia", icon: <Users className="w-3 h-3" /> },
+      { name: "Ar-condicionado", icon: <Snowflake className="w-3 h-3" /> },
+      { name: "Serviço de quarto", icon: <Utensils className="w-3 h-3" /> },
     ],
     distanceToEvent: "800m do Parque de Eventos",
   },
   {
-    id: "hotel-4",
+    id: "casa-1",
+    name: "Casa Junina com Piscina",
+    description:
+      "Linda casa com decoração junina, piscina privativa e churrasqueira. Perfeita para famílias ou grupos de amigos que querem aproveitar o São João com conforto e privacidade.",
+    address: "Rua dos Ipês, 78, Bairro Novo, Arcoverde",
+    phone: "(87) 99876-5432",
+    priceRange: "R$ 350 - R$ 450/dia",
+    rating: 4.9,
+    type: "casa",
+    images: [
+      { url: "/placeholder.svg?height=400&width=600", alt: "Fachada da Casa Junina" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Sala de estar da Casa Junina" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Piscina da Casa Junina" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Quarto principal da Casa Junina" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Área de churrasqueira da Casa Junina" },
+    ],
+    amenities: [
+      { name: "Wi-Fi", icon: <Wifi className="w-3 h-3" /> },
+      { name: "Piscina privativa", icon: <Bath className="w-3 h-3" /> },
+      { name: "Churrasqueira", icon: <Utensils className="w-3 h-3" /> },
+      { name: "Estacionamento", icon: <Car className="w-3 h-3" /> },
+      { name: "Ar-condicionado", icon: <Snowflake className="w-3 h-3" /> },
+      { name: "TV a cabo", icon: <Tv className="w-3 h-3" /> },
+      { name: "Cozinha completa", icon: <Utensils className="w-3 h-3" /> },
+    ],
+    distanceToEvent: "1,5km do Parque de Eventos",
+    rooms: 3,
+    bathrooms: 2,
+    capacity: 8,
+    host: {
+      name: "Maria da Silva",
+      rating: 4.8,
+      responseRate: "1 hora",
+      avatar: "/placeholder.svg?height=50&width=50",
+    },
+    featured: true,
+  },
+  {
+    id: "apartamento-1",
+    name: "Apartamento Central com Vista",
+    description:
+      "Apartamento moderno e bem localizado, com vista para a cidade. A apenas 5 minutos a pé do Parque de Eventos. Totalmente mobiliado e equipado para sua estadia durante o festival.",
+    address: "Edifício Central, Apto 502, Centro, Arcoverde",
+    phone: "(87) 99765-4321",
+    priceRange: "R$ 200 - R$ 300/dia",
+    rating: 4.6,
+    type: "apartamento",
+    images: [
+      { url: "/placeholder.svg?height=400&width=600", alt: "Sala do Apartamento Central" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Quarto do Apartamento Central" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Cozinha do Apartamento Central" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Vista da varanda do Apartamento Central" },
+    ],
+    amenities: [
+      { name: "Wi-Fi", icon: <Wifi className="w-3 h-3" /> },
+      { name: "Ar-condicionado", icon: <Snowflake className="w-3 h-3" /> },
+      { name: "TV a cabo", icon: <Tv className="w-3 h-3" /> },
+      { name: "Cozinha equipada", icon: <Utensils className="w-3 h-3" /> },
+      { name: "Elevador", icon: <ChevronUp className="w-3 h-3" /> },
+      { name: "Varanda", icon: <Wind className="w-3 h-3" /> },
+    ],
+    distanceToEvent: "400m do Parque de Eventos",
+    rooms: 2,
+    bathrooms: 1,
+    capacity: 4,
+    host: {
+      name: "João Pereira",
+      rating: 4.7,
+      responseRate: "30 minutos",
+      avatar: "/placeholder.svg?height=50&width=50",
+    },
+  },
+  {
+    id: "casa-2",
+    name: "Chalé Sertanejo",
+    description:
+      "Chalé rústico com decoração típica do sertão nordestino. Ambiente tranquilo e aconchegante, ideal para casais ou pequenas famílias que buscam uma experiência autêntica.",
+    address: "Estrada do Sertão, Km 3, Zona Rural, Arcoverde",
+    phone: "(87) 99888-7777",
+    priceRange: "R$ 180 - R$ 250/dia",
+    rating: 4.8,
+    type: "casa",
+    images: [
+      { url: "/placeholder.svg?height=400&width=600", alt: "Fachada do Chalé Sertanejo" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Interior do Chalé Sertanejo" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Área externa do Chalé Sertanejo" },
+    ],
+    amenities: [
+      { name: "Wi-Fi", icon: <Wifi className="w-3 h-3" /> },
+      { name: "Café da manhã", icon: <Coffee className="w-3 h-3" /> },
+      { name: "Estacionamento", icon: <Car className="w-3 h-3" /> },
+      { name: "Rede de descanso", icon: <Wind className="w-3 h-3" /> },
+      { name: "Fogão a lenha", icon: <Utensils className="w-3 h-3" /> },
+    ],
+    distanceToEvent: "3,5km do Parque de Eventos",
+    rooms: 1,
+    bathrooms: 1,
+    capacity: 3,
+    host: {
+      name: "Antônio Nunes",
+      rating: 4.9,
+      responseRate: "2 horas",
+      avatar: "/placeholder.svg?height=50&width=50",
+    },
+  },
+  {
+    id: "pousada-1",
     name: "Pousada Cantinho do Sertão",
     description:
-      "Pousada rústica com ambiente acolhedor e café da manhã regional. Quartos simples mas confortáveis, com ótimo custo-benefício.",
+      "Pousada rústica com ambiente acolhedor e café da manhã regional. Quartos simples mas confortáveis, com ótimo custo-benefício. Atendimento familiar e acolhedor.",
     address: "Rua do Forró, 45, Bairro São Miguel, Arcoverde",
     phone: "(87) 3821-2345",
     priceRange: "R$ 120 - R$ 200",
     rating: 4.2,
-    image: "/placeholder.svg?height=400&width=600",
+    type: "pousada",
+    images: [
+      { url: "/placeholder.svg?height=400&width=600", alt: "Entrada da Pousada Cantinho do Sertão" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Quarto da Pousada Cantinho do Sertão" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Café da manhã da Pousada Cantinho do Sertão" },
+    ],
     amenities: [
       { name: "Wi-Fi", icon: <Wifi className="w-3 h-3" /> },
       { name: "Café da manhã", icon: <Coffee className="w-3 h-3" /> },
+      { name: "Ventilador", icon: <Wind className="w-3 h-3" /> },
     ],
     distanceToEvent: "1,5km do Parque de Eventos",
   },
   {
-    id: "hotel-5",
+    id: "apartamento-2",
+    name: "Flat São João",
+    description:
+      "Flat moderno e funcional, perfeito para quem busca praticidade durante o festival. Localizado em prédio com segurança 24h e próximo aos principais polos do São João.",
+    address: "Rua das Bandeiras, 210, Centro, Arcoverde",
+    phone: "(87) 99123-4567",
+    priceRange: "R$ 180 - R$ 250/dia",
+    rating: 4.4,
+    type: "apartamento",
+    images: [
+      { url: "/placeholder.svg?height=400&width=600", alt: "Sala do Flat São João" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Quarto do Flat São João" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Cozinha do Flat São João" },
+    ],
+    amenities: [
+      { name: "Wi-Fi", icon: <Wifi className="w-3 h-3" /> },
+      { name: "Ar-condicionado", icon: <Snowflake className="w-3 h-3" /> },
+      { name: "TV a cabo", icon: <Tv className="w-3 h-3" /> },
+      { name: "Cozinha compacta", icon: <Utensils className="w-3 h-3" /> },
+      { name: "Segurança 24h", icon: <Users className="w-3 h-3" /> },
+    ],
+    distanceToEvent: "700m do Parque de Eventos",
+    rooms: 1,
+    bathrooms: 1,
+    capacity: 2,
+    host: {
+      name: "Ana Carvalho",
+      rating: 4.5,
+      responseRate: "1 hora",
+      avatar: "/placeholder.svg?height=50&width=50",
+    },
+  },
+  {
+    id: "hotel-4",
     name: "Grande Hotel Arcoverde",
     description:
-      "O mais tradicional hotel da cidade, com amplos quartos e excelente serviço. Restaurante próprio com culinária regional e internacional.",
+      "O mais tradicional hotel da cidade, com amplos quartos e excelente serviço. Restaurante próprio com culinária regional e internacional. Estrutura completa para sua estadia.",
     address: "Praça Central, 100, Centro, Arcoverde",
     phone: "(87) 3821-0001",
     priceRange: "R$ 280 - R$ 500",
     rating: 4.8,
-    image: "/placeholder.svg?height=400&width=600",
+    type: "hotel",
+    images: [
+      { url: "/placeholder.svg?height=400&width=600", alt: "Fachada do Grande Hotel Arcoverde" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Lobby do Grande Hotel Arcoverde" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Quarto do Grande Hotel Arcoverde" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Restaurante do Grande Hotel Arcoverde" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Piscina do Grande Hotel Arcoverde" },
+    ],
     amenities: [
       { name: "Wi-Fi", icon: <Wifi className="w-3 h-3" /> },
       { name: "Café da manhã", icon: <Coffee className="w-3 h-3" /> },
       { name: "Estacionamento", icon: <Car className="w-3 h-3" /> },
       { name: "Piscina", icon: <Bath className="w-3 h-3" /> },
+      { name: "Ar-condicionado", icon: <Snowflake className="w-3 h-3" /> },
+      { name: "Restaurante", icon: <Utensils className="w-3 h-3" /> },
+      { name: "Academia", icon: <Users className="w-3 h-3" /> },
     ],
     distanceToEvent: "600m do Parque de Eventos",
+    featured: true,
   },
   {
-    id: "hotel-6",
-    name: "Pousada Recanto Junino",
+    id: "casa-3",
+    name: "Casa Família Junina",
     description:
-      "Pousada temática com decoração junina o ano todo. Café da manhã com comidas típicas e ambiente familiar.",
-    address: "Rua das Quadrilhas, 78, Bairro Alto, Arcoverde",
-    phone: "(87) 3821-6543",
-    priceRange: "R$ 140 - R$ 220",
-    rating: 4.4,
-    image: "/placeholder.svg?height=400&width=600",
+      "Casa espaçosa ideal para grupos grandes ou famílias. Quintal amplo com área de churrasco e espaço para crianças. Localizada em bairro tranquilo e seguro, próximo ao centro.",
+    address: "Rua das Palmeiras, 45, Bairro Boa Vista, Arcoverde",
+    phone: "(87) 99555-1234",
+    priceRange: "R$ 400 - R$ 500/dia",
+    rating: 4.7,
+    type: "casa",
+    images: [
+      { url: "/placeholder.svg?height=400&width=600", alt: "Fachada da Casa Família Junina" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Sala de estar da Casa Família Junina" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Quintal da Casa Família Junina" },
+      { url: "/placeholder.svg?height=400&width=600", alt: "Cozinha da Casa Família Junina" },
+    ],
     amenities: [
       { name: "Wi-Fi", icon: <Wifi className="w-3 h-3" /> },
-      { name: "Café da manhã", icon: <Coffee className="w-3 h-3" /> },
+      { name: "Churrasqueira", icon: <Utensils className="w-3 h-3" /> },
       { name: "Estacionamento", icon: <Car className="w-3 h-3" /> },
+      { name: "Ar-condicionado", icon: <Snowflake className="w-3 h-3" /> },
+      { name: "TV a cabo", icon: <Tv className="w-3 h-3" /> },
+      { name: "Cozinha completa", icon: <Utensils className="w-3 h-3" /> },
+      { name: "Área para crianças", icon: <Users className="w-3 h-3" /> },
     ],
-    distanceToEvent: "1,8km do Parque de Eventos",
+    distanceToEvent: "2km do Parque de Eventos",
+    rooms: 4,
+    bathrooms: 3,
+    capacity: 12,
+    host: {
+      name: "Roberto Almeida",
+      rating: 4.6,
+      responseRate: "3 horas",
+      avatar: "/placeholder.svg?height=50&width=50",
+    },
   },
 ]
-

@@ -32,7 +32,7 @@ export default function MobileBottomNav({ lang = "pt" }: { lang?: string }) {
       icon: <Calendar className="w-5 h-5" />,
     },
     {
-      name: lang === "en" ? "Hotels" : lang === "es" ? "Hoteles" : "Hotéis",
+      name: lang === "en" ? "Accommodation" : lang === "es" ? "Alojamiento" : "Hospedagem",
       href: `/${lang}/hoteis`,
       icon: <Bed className="w-5 h-5" />,
     },
